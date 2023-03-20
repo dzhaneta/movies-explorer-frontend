@@ -1,0 +1,157 @@
+.header {
+    padding: 18px 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 15px 30px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header {
+        padding: 15px 14px;
+    }
+}  
+
+.header_colored {
+    background-color: #5C5C5C;
+}
+
+.header__profile {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+@media screen and (max-width: 320px) {
+    .header__profile {
+        gap: 14px;
+    }
+} 
+
+@media screen and (max-width: 768px) {
+    .header__profile_logged {
+        display: none;
+    }
+} 
+
+@media screen and (max-width: 768px) {
+    .header__profile_menu-view {
+        display: flex;
+        bottom: 90px;
+        right: 210px;
+    }
+} 
+
+.header__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+@media screen and (max-width: 320px) {
+    .header__link {
+        font-size: 10px;
+        line-height: 16px;
+    }
+}  
+
+
+.header__link_signup {
+    color: #fff;
+}
+
+.header__link_signin {
+    width: 76px;
+    height: 32px;
+    border-radius: 3px;
+    background-color: #2BE080;
+    color: #000;
+}
+
+@media screen and (max-width: 320px) {
+    .header__link_signin {
+        width: 54px;
+        height: 26px;
+    }
+}  
+
+.header__link_account {
+    display: flex;
+    justify-content: flex-end;
+    height: 32px;
+    min-width: 100px;
+    border-radius: 40px;
+    box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+    color: #000;
+}
+
+.header__profile-username {
+    font-size: 13px;
+    line-height: 12px;
+    margin: 0;
+    padding-left: 11px;
+}
+
+.header__profile-icon {
+    margin: 3px 3px 3px 7px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50px;
+    background-color: #F9F9F9;
+    background-image: url(../../images/icon_account.svg);
+    background-position: center;
+    background-size: 11px;
+    background-repeat: no-repeat;
+}
+
+.header__burgermenu {
+    display: none;
+    width: 28px;
+    height: 23px;
+    background-image: url(../../images/icon_burgermenu.svg);
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+}
+
+@media screen and (max-width: 768px) {
+    .header__burgermenu {
+        display: block;
+    }
+}  
+
+.header__overlay {
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    right: 0px;
+    width: 520px;
+    height: 100%;
+    background-color: #2BE080;
+}
+
+.header__overlay-close-button {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 22px;
+    height: 22px;
+    background-image: url(../../images/icon_closemenu.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    background-color: transparent;
+}
