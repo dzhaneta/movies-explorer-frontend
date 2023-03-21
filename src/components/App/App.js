@@ -1,46 +1,32 @@
 import React, { useState } from 'react'; 
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
+import { LoggedInContext } from "../../contexts/LoggedInContext";
 import Login from '../Login/Login';
 import Register from '../Register/Register';
-import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
-import Footer from '../Footer/Footer';
 import './App.css';
 
 function App() {
-  const loggedIn = useState(true);
-
-  const location = useLocation();
-
-  const isHeaderVisible = (location.pathname === "/") ||
-    (location.pathname === "/movies") ||
-    (location.pathname === "/saved-movies") ||
-    (location.pathname === "/profile");
-
-  const isFooterVisible = (location.pathname === "/") ||
-    (location.pathname === "/movies") ||
-    (location.pathname === "/saved-movies");
-
+  const loggedIn = useState(false);
 
   return (
     <div className="page">
       <div className="page__container">
 
-        <header>{isHeaderVisible && <Header loggedIn={loggedIn} />}</header>
+        <Switch>
 
-        <main>
-          <Switch>
+          <Route path="/signin">
+            <Login />
+          </Route>
 
-            <Route path="/signin">
-              <Login />
-            </Route>
+          <Route path="/signup">
+            <Register />
+         </Route>
 
-            <Route path="/signup">
-              <Register />
-            </Route>
+          <LoggedInContext.Provider value={loggedIn}>
 
             <Route path="/movies">
               <Movies />
@@ -58,10 +44,9 @@ function App() {
               <Main />
             </Route>
 
-          </Switch>
-        </main>
+          </LoggedInContext.Provider>
 
-        {isFooterVisible && <Footer />}
+        </Switch>
 
       </div>
 

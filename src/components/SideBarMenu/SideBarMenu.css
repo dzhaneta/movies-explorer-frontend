@@ -1,0 +1,24 @@
+.sidebar {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    right: 0px;
+    width: 520px;
+    height: 100%;
+    background-color: #2BE080;
+}
+
+.sidebar__close-button {
+    display: none;
+    position: relative;
+    width: 22px;
+    height: 22px;
+    background-image: url(../../images/icon_closemenu.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    background-color: transparent;
+}

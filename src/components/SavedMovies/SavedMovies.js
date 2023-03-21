@@ -1,10 +1,16 @@
 import React from "react";
+import Header from '../Header/Header';
+import Footer from "../Footer/Footer";
 
-function SavedMovies() {
+function SavedMovies({ loggedIn }) {
     // functionality
 
     return (
-        <div className="saved-movies"></div>
+        <>
+            <Header loggedIn={loggedIn} />
+            <main className="saved-movies"></main>
+            <Footer />
+        </>
     );
 
 }

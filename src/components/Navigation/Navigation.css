@@ -1,14 +1,12 @@
 .navigation {
-    position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 768px) {
     .navigation {
-        gap: 14px;
+        display: none;
     }
 } 
 
@@ -22,7 +20,7 @@
     justify-content: center;
     font-weight: 400;
     font-size: 13px;
-    line-height: 12px;
+    line-height: 18px;
     color: #000;
 }
 

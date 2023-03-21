@@ -1,19 +1,39 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { LoggedInContext } from "../../contexts/LoggedInContext";
 
-function Navigation({loggedIn}) {
+function Navigation() {
+
     const location = useLocation();
+    const isLoggedIn = React.useContext(LoggedInContext);
+    console.log(isLoggedIn[1]);
 
     return (
-        <nav className={`${!loggedIn && "navigation_hidden"} navigation`}>
-            <Link className={`
-                navigation__link link ${location.pathname === "/movies" &&
-                'navigation__link_active'}
-            `}>Фильмы</Link>
-            <Link className={`
-                navigation__link link ${location.pathname === "/saved-movies" &&
-                'navigation__link_active'}
-            `}>Сохраненные фильмы</Link>
+        <nav 
+            className={`
+                navigation 
+                ${ ( !isLoggedIn === true ) && 'navigation_hidden'}
+            `}
+        >
+            <Link 
+                className={`
+                    navigation__link link 
+                    ${location.pathname === "/movies" && 'navigation__link_active'}
+                `}
+                to="/movies"
+            >
+                Фильмы
+            </Link>
+
+            <Link 
+                className={`
+                    navigation__link link ${location.pathname === "/saved-movies" &&
+                    'navigation__link_active'}
+                `}
+                to="/saved-movies"
+            >
+                Сохраненные фильмы
+            </Link>
         </nav>
     );
 
