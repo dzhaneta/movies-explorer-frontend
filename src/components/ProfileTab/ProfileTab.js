@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { LoggedInContext } from "../../contexts/LoggedInContext";
+import UserTab from "../UserTab/UserTab";
 
 function ProfileTab() {
     
     const isLoggedIn = React.useContext(LoggedInContext);
+    console.log(isLoggedIn);
 
     return (
         <div className={`
@@ -12,24 +14,15 @@ function ProfileTab() {
                 ${isLoggedIn && 'profile-tab_logged'}
             `}
         >
-            { isLoggedIn === true ? (
-                <Link 
-                    className="
-                        profile-tab__link 
-                        profile-tab__link_account
-                        link"
-                    to="/profile"
-                >
-                    <p className="profile-tab__username">Аккаунт</p>
-                    <div className="profile-tab__icon"></div>
-                </Link>
+            {isLoggedIn? (
+                <UserTab />
             ) : (
                 <>
                     <Link 
                         className="
                             profile-tab__link
                             profile-tab__link_signup 
-                            link" 
+                        " 
                         to="/signup"
                     >
                         Регистрация
@@ -39,7 +32,7 @@ function ProfileTab() {
                         className="
                             profile-tab__link 
                             profile-tab__link_signin 
-                            link" 
+                        " 
                         to="/signin"
                     >
                         Войти

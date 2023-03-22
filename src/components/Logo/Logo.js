@@ -5,7 +5,7 @@ import logoPath from "../../images/logo_green.svg";
 function Logo() {
 
     return (
-        <Link className="logo link" to="/">
+        <Link className="logo" to="/">
             <img className="logo__pic" src={logoPath} alt="логотип" />
         </Link>
         

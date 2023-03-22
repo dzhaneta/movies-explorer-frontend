@@ -2,22 +2,32 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LoggedInContext } from "../../contexts/LoggedInContext";
 
-function Navigation() {
+function Navigation({ vertical }) {
 
     const location = useLocation();
     const isLoggedIn = React.useContext(LoggedInContext);
-    console.log(isLoggedIn[1]);
 
     return (
         <nav 
             className={`
                 navigation 
                 ${ ( !isLoggedIn === true ) && 'navigation_hidden'}
+                ${vertical && 'navigation_vertical'}
             `}
         >
+            <Link
+                className={`
+                    navigation__link 
+                    ${location.pathname === "/" && 'navigation__link_active'}
+                    ${!vertical && 'navigation__link_hidden'}
+                `}
+                to="/"
+            >
+                Главная
+            </Link>
             <Link 
                 className={`
-                    navigation__link link 
+                    navigation__link 
                     ${location.pathname === "/movies" && 'navigation__link_active'}
                 `}
                 to="/movies"
@@ -27,7 +37,7 @@ function Navigation() {
 
             <Link 
                 className={`
-                    navigation__link link ${location.pathname === "/saved-movies" &&
+                    navigation__link ${location.pathname === "/saved-movies" &&
                     'navigation__link_active'}
                 `}
                 to="/saved-movies"

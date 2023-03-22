@@ -6,7 +6,7 @@ import Navigation from "../Navigation/Navigation";
 import ProfileTab from "../ProfileTab/ProfileTab";
 
 
-function Header() {
+function Header({ onSideBarOpen }) {
 
     const location = useLocation();
 
@@ -23,7 +23,8 @@ function Header() {
             <ProfileTab />
 
             <button 
-                className="header__burgermenu link">
+                className="header__burgermenu"
+                onClick={onSideBarOpen}>
             </button>
 
         </header>

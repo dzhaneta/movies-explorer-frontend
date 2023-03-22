@@ -1,4 +1,5 @@
 .header {
+    position: relative;
     padding: 18px 70px;
     display: flex;
     align-items: center;
@@ -29,6 +30,11 @@
     background-repeat: no-repeat;
     border: none;
     background-color: transparent;
+}
+
+.header__burgermenu:hover {
+    opacity: 0.8;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {

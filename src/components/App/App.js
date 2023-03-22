@@ -10,7 +10,7 @@ import Profile from '../Profile/Profile';
 import './App.css';
 
 function App() {
-  const loggedIn = useState(false);
+  const [ loggedIn ] = useState(true);
 
   return (
     <div className="page">

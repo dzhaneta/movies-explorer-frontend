@@ -6,14 +6,25 @@
     z-index: 1;
     top: 0px;
     right: 0px;
-    width: 520px;
+    min-width: 520px;
     height: 100%;
     background-color: #2BE080;
 }
 
+@media screen and (max-width: 520px) {
+    .sidebar {
+       min-width: 100%;
+    }
+} 
+
+.sidebar_open {
+    display: flex;
+}
+
 .sidebar__close-button {
-    display: none;
-    position: relative;
+    align-self: flex-end;
+    margin: 22px 22px 0 0;
+    padding: 0;
     width: 22px;
     height: 22px;
     background-image: url(../../images/icon_closemenu.svg);
@@ -21,4 +32,9 @@
     background-size: contain;
     border: none;
     background-color: transparent;
+}
+
+.sidebar__close-button:hover {
+    opacity: 0.8;
+    cursor: pointer;
 }

@@ -23,6 +23,7 @@
     font-weight: 500;
     font-size: 12px;
     line-height: 16px;
+    text-decoration: none;
 }
 
 @media screen and (max-width: 320px) {
@@ -32,6 +33,10 @@
     }
 }  
 
+.profile-tab__link:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
 
 .profile-tab__link_signup {
     color: #fff;
@@ -45,6 +50,11 @@
     color: #000;
 }
 
+.profile-tab__link_signin:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 320px) {
     .profile-tab__link_signin {
         width: 54px;
@@ -52,32 +62,3 @@
     }
 }  
 
-.profile-tab__link_account {
-    display: flex;
-    justify-content: flex-end;
-    height: 32px;
-    min-width: 100px;
-    border-radius: 40px;
-    box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
-    background-color: #fff;
-    color: #000;
-}
-
-.profile-tab__username {
-    font-size: 13px;
-    line-height: 12px;
-    margin: 0;
-    padding-left: 11px;
-}
-
-.profile-tab__icon {
-    margin: 3px 3px 3px 7px;
-    width: 26px;
-    height: 26px;
-    border-radius: 50px;
-    background-color: #F9F9F9;
-    background-image: url(../../images/icon_account.svg);
-    background-position: center;
-    background-size: 11px;
-    background-repeat: no-repeat;
-}
