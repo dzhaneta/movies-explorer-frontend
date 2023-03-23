@@ -4,6 +4,8 @@ import Footer from "../Footer/Footer";
 import SideBarMenu from '../SideBarMenu/SideBarMenu';
 import Promo from "../Promo/Promo";
 import AboutProject from "../AboutProject/AboutProject";
+import Techs from "../Techs/Techs";
+import Student from "../Student/Student";
 
 function Main() {
 
@@ -25,19 +27,15 @@ function Main() {
 
             <main className="main">
                 
-                <Promo />
+                {/* <Promo /> */}
 
                 <div className="content">
 
-                    <AboutProject />
+                    {/* <AboutProject /> */}
 
-                    <section className="techs"></section>
+                    {/* <Techs /> */}
 
-                    <section className="student">
-                        <section className="about-me"></section>
-                        <section className="portfolio"></section>
-                    </section>
-                    
+                    <Student />
 
                 </div>
                 

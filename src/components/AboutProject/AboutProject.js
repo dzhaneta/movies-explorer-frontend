@@ -2,14 +2,13 @@ import React from "react";
 import Section from "../Section/Section";
 
 function AboutProject() {
-    // functionality
 
     return (
         <Section
             name="project"
             title="О проекте"
         >
-            
+
             <div className="project__infos">
 
                 <div className="project__info">
@@ -34,8 +33,19 @@ function AboutProject() {
 
             </div>
 
-            <div className="project__timeline">
-
+            <div className="timeline">
+                <div className="timeline__item timeline__item_type_backend">
+                    <p className="timeline__text">1 неделя</p>
+                </div>
+                <div className="timeline__item timeline__item_type_frontend">
+                    <p className="timeline__text">4 недели</p>
+                </div>
+                <div className="timeline__item timeline__item_type_subfront">
+                    <p className="timeline__text_sub">Back-end</p>
+                </div>
+                <div className="timeline__item timeline__item_type_subback">
+                    <p className="timeline__text_sub">Front-end</p>
+                </div>
             </div>
 
         </Section>
