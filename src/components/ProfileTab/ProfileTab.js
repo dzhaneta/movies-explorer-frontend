@@ -6,7 +6,6 @@ import UserTab from "../UserTab/UserTab";
 function ProfileTab() {
     
     const isLoggedIn = React.useContext(LoggedInContext);
-    console.log(isLoggedIn);
 
     return (
         <div className={`

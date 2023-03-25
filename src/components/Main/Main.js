@@ -27,13 +27,13 @@ function Main() {
 
             <main className="main">
                 
-                {/* <Promo /> */}
+                <Promo />
 
                 <div className="content">
 
-                    {/* <AboutProject /> */}
+                    <AboutProject />
 
-                    {/* <Techs /> */}
+                    <Techs />
 
                     <Student />
 
@@ -42,7 +42,7 @@ function Main() {
             </main>
             
             <Footer />
-            
+
             <SideBarMenu
                 isOpen={isSideBarOpen}
                 onClose={handleCloseSideBarMenu}

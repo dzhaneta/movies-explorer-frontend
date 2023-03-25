@@ -9,7 +9,7 @@ function AboutMe() {
 
             <img 
                 src={studentPicPath} 
-                alt="student_pic" 
+                alt="фото студента" 
                 className="about-me__pic about-me__pic_vertical" 
             />
 

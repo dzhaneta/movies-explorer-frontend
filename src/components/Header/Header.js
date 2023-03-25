@@ -13,7 +13,8 @@ function Header({ onSideBarOpen }) {
     return (
         <header 
             className={`
-                header ${location.pathname === "/" && 'header_colored'}
+                header 
+                ${location.pathname === "/" && 'header_colored'}
             `}
         >
             <Logo />

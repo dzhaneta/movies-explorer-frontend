@@ -1,6 +1,7 @@
 import React, { useState } from 'react'; 
 import { Route, Switch } from "react-router-dom";
 import { LoggedInContext } from "../../contexts/LoggedInContext";
+import NotFound from '../NotFound/NotFound';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Main from '../Main/Main';
@@ -10,7 +11,13 @@ import Profile from '../Profile/Profile';
 import './App.css';
 
 function App() {
-  const [ loggedIn ] = useState(true);
+
+  const [ loggedIn ] = useState(true); // manual switcher
+
+  const [user, setUser] = React.useState({
+    name: 'Виталий',
+    email: 'vitalyi@mail.ru',
+  });
 
   return (
     <div className="page">
@@ -24,7 +31,7 @@ function App() {
 
           <Route path="/signup">
             <Register />
-         </Route>
+          </Route>
 
           <LoggedInContext.Provider value={loggedIn}>
 
@@ -37,7 +44,10 @@ function App() {
             </Route>
 
             <Route path="/profile">
-              <Profile />
+              <Profile 
+                user={user}
+                onSubmit={setUser}
+              />
             </Route>
 
             <Route exact path="/">
@@ -45,6 +55,10 @@ function App() {
             </Route>
 
           </LoggedInContext.Provider>
+
+          <Route path="*">
+              <NotFound />
+          </Route>
 
         </Switch>
 

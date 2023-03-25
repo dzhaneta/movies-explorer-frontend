@@ -1,0 +1,31 @@
+.movies-card-list {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.movies-card-list__item {
+    width: 270px;
+}
+
+@media screen and (max-width: 1280px) {
+    .movies-card-list {
+        gap: 30px;
+    }
+
+    .movies-card-list__item {
+        width: calc((100% - 60px) / 3);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .movies-card-list {
+        flex-direction: column;
+        gap: 34px;
+    }
+
+    .movies-card-list__item {
+        width: 100%;
+    }
+}
