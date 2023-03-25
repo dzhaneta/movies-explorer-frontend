@@ -4,3 +4,5 @@
 фронтенд приложения (пока без особой функциональности).
   
 #### https://github.com/dzhaneta/movies-explorer-frontend
+
+#### Ссылка на дизайн-макет проекта [тут](https://github.com/dzhaneta/express-mesto-gha)
