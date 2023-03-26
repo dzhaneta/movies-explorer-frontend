@@ -5,4 +5,4 @@
   
 #### https://github.com/dzhaneta/movies-explorer-frontend
 
-#### Ссылка на дизайн-макет проекта [тут](https://github.com/dzhaneta/express-mesto-gha)
+#### Ссылка на дизайн-макет проекта [тут](https://disk.yandex.ru/d/9bwqjAkUbpB18A)
