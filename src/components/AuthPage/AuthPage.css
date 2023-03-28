@@ -54,6 +54,11 @@
     color: #ffffff;
 }
 
+.auth-page__submit-button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 .auth-page__extra {
     align-self: center;
     margin: 0;

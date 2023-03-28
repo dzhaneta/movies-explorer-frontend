@@ -1,9 +1,7 @@
 function FilterCheckbox({ checked, onChange }) {
     return (
         <div className="filter-checkbox">
-
             
-
             <input
                 className="filter-checkbox__switch"
                 type="checkbox"

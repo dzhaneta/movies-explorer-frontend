@@ -17,6 +17,10 @@
     transition: all 0.2s;
 }
 
+.filter-checkbox__switch:hover {
+    cursor: pointer;
+}
+
 .filter-checkbox__switch::after {
     content: "";
     position: absolute;

@@ -66,7 +66,10 @@ function AuthPage({
         <span className="error"></span>
 
         <button
-          className='auth-page__submit-button auth-page__submit-button_active app__button'
+          className='
+            auth-page__submit-button
+            auth-page__submit-button_active
+          '
           type='submit'
         >
           {submitButtonText}
