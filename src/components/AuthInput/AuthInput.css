@@ -26,10 +26,6 @@
     color: #bababa;
 }
 
-.input__field_error {
-    color: #EE3465;
-}
-
 .input__container:focus {
     border-bottom: 1px solid #2BE080;
     outline: none;
@@ -44,4 +40,5 @@
     font-size: 10px;
     line-height: 12px;
     color: #EE3465;
+    
 }
