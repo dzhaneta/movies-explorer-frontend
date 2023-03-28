@@ -14,11 +14,11 @@ function NotFound() {
                 </h2>
 
                 <Link
-                     to="/signin"
-                            className="not-found__link"
-                        >
-                            Назад
-                        </Link>
+                    to="/signin"
+                    className="not-found__link"
+                >
+                    Назад
+                </Link>
             
         </main>
 );
