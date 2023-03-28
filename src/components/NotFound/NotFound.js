@@ -6,12 +6,16 @@ function NotFound() {
 
     return (
         <main className="not-found">
-                <h2 className="not-found__title">
-                    404
+                <div className="not-found__wrap">
+                    <h2 className="not-found__title">
+                        404
+                    </h2>
+
                     <p className="not-found__subtitle">
                         Страница не найдена
                     </p>
-                </h2>
+                </div>
+                
 
                 <Link
                     to="/signin"
