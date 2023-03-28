@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from '../Header/Header';
 import SideBarMenu from '../SideBarMenu/SideBarMenu';
 
-function Profile({ user, onSubmit}) {
+function Profile({ user, loggedIn, onSubmit}) {
 
     // form states & handlers
 
@@ -32,6 +32,7 @@ function Profile({ user, onSubmit}) {
     return (
         <>
             <Header 
+                loggedIn={loggedIn}
                 onSideBarOpen={handleOpenSideBarMenu}
             />
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'; 
 import { Route, Switch } from "react-router-dom";
-import { LoggedInContext } from "../../contexts/LoggedInContext";
 import NotFound from '../NotFound/NotFound';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
@@ -12,7 +11,7 @@ import './App.css';
 
 function App() {
 
-  const [ loggedIn ] = useState(true); // manual switcher
+  const [ loggedIn ] = useState(false); // manual switcher
 
   const [user, setUser] = React.useState({
     name: 'Виталий',
@@ -25,6 +24,22 @@ function App() {
 
         <Switch>
 
+          <Route path="/movies">
+            <Movies loggedIn={loggedIn} />
+          </Route>
+
+          <Route path="/saved-movies">
+            <SavedMovies loggedIn={loggedIn} />
+          </Route>
+
+          <Route path="/profile">
+            <Profile 
+              user={user}
+              loggedIn={loggedIn}
+              onSubmit={setUser}
+            />
+          </Route>
+
           <Route path="/signin">
             <Login />
           </Route>
@@ -33,28 +48,9 @@ function App() {
             <Register />
           </Route>
 
-          <LoggedInContext.Provider value={loggedIn}>
-
-            <Route path="/movies">
-              <Movies />
-            </Route>
-
-            <Route path="/saved-movies">
-              <SavedMovies />
-            </Route>
-
-            <Route path="/profile">
-              <Profile 
-                user={user}
-                onSubmit={setUser}
-              />
-            </Route>
-
-            <Route exact path="/">
-              <Main />
-            </Route>
-
-          </LoggedInContext.Provider>
+          <Route exact path="/">
+            <Main loggedIn={loggedIn} />
+          </Route>
 
           <Route path="*">
               <NotFound />

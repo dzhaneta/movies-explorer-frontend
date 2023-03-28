@@ -1,19 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { LoggedInContext } from "../../contexts/LoggedInContext";
 import UserTab from "../UserTab/UserTab";
 
-function ProfileTab() {
+function ProfileTab({ loggedIn }) {
     
-    const isLoggedIn = React.useContext(LoggedInContext);
 
     return (
         <div className={`
                 profile-tab 
-                ${isLoggedIn && 'profile-tab_logged'}
+                ${loggedIn && 'profile-tab_logged'}
             `}
         >
-            {isLoggedIn? (
+            {loggedIn? (
                 <UserTab />
             ) : (
                 <>

@@ -1,17 +1,15 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LoggedInContext } from "../../contexts/LoggedInContext";
 
-function Navigation({ vertical }) {
+function Navigation({ loggedIn,  vertical }) {
 
     const location = useLocation();
-    const isLoggedIn = React.useContext(LoggedInContext);
 
     return (
         <nav 
             className={`
                 navigation 
-                ${ ( !isLoggedIn === true ) && 'navigation_hidden'}
+                ${ ( !loggedIn === true ) && 'navigation_hidden'}
                 ${vertical && 'navigation_vertical'}
             `}
         >
