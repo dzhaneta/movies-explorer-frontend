@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useFormWithValidation } from '../../utils/useFormWithValidation';
 import Logo from '../Logo/Logo';
 import AuthInput from '../AuthInput/AuthInput';
 
@@ -10,19 +11,12 @@ function AuthPage({
   inputs,
 }) {
 
-  const [credentials, setCredentials] = useState(null);
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
+
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('submit: ', credentials); // temporary for funcionality
-  }
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setCredentials({
-      ...credentials,
-      [name]: value,
-    });
+    console.log('submit: ', values); // temporary for funcionality
   }
 
   return (
@@ -48,14 +42,18 @@ function AuthPage({
               <AuthInput
                 label={input.label}
                 value={
-                  credentials && credentials[input.name]
-                    ? credentials[input.name]
+                  values && values[input.name]
+                    ? values[input.name]
                     : ''
                 }
                 name={input.name}
                 type={input.type}
+                pattern={input.pattern}
+                minLength={input.minLength}
+                maxLength={input.maxLength}
+                placeholder={input.placeholder}
                 onChange={handleChange}
-                errorMessage={input.errorMessage}
+                errorMessage={errors[input.name]}
                 key={input.name}
               />
 
@@ -66,11 +64,12 @@ function AuthPage({
         <span className="error"></span>
 
         <button
-          className='
-            auth-page__submit-button
-            auth-page__submit-button_active
-          '
+          className={`
+            auth-page__submit-button 
+            ${!isValid && 'auth-page__submit-button_inactive'}
+          `}
           type='submit'
+          disabled={!isValid}
         >
           {submitButtonText}
         </button>

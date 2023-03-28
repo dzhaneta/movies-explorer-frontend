@@ -59,6 +59,11 @@
     opacity: 0.8;
 }
 
+.auth-page__submit-button_inactive {
+    background-color: #F8F8F8;
+    color: #C2C2C2;
+}
+
 .auth-page__extra {
     align-self: center;
     margin: 0;

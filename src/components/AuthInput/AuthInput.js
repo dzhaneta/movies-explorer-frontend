@@ -5,6 +5,10 @@ function AuthInput({
     value,
     name,
     type,
+    pattern,
+    minLength,
+    maxLength,
+    placeholder,
     onChange,
     errorMessage,
   }) {
@@ -15,10 +19,14 @@ function AuthInput({
         <label className='input'>
             {label}
             <input
+                required
                 type={type}
                 value={value}
                 name={name}
-                required
+                pattern={pattern}
+                minLength={minLength}
+                maxLength={maxLength}
+                placeholder={placeholder}
                 onChange={onChange}
                 className={`
                     input__container 

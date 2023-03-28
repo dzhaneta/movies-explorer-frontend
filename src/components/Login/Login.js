@@ -7,13 +7,15 @@ function Login() {
     {
       label: 'E-mail',
       name: 'email',
-      type: 'text',
+      type: 'email',
+      placeholder: 'ivanov@mail.ru',
       errorMessage: '',
     },
     {
       label: 'Пароль',
       name: 'password',
       type: 'password',
+      placeholder: 'Введите пароль',
       errorMessage: 'Что-то пошло не так...',
     },
   ];
