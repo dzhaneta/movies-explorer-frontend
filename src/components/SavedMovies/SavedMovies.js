@@ -7,7 +7,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import savedMoviesList from '../../utils/savedMoviesList';
 
-function SavedMovies() {
+function SavedMovies({ loggedIn }) {
 
     const [isLoading] = useState(false);
 
@@ -24,6 +24,7 @@ function SavedMovies() {
     return (
         <>
             <Header
+                loggedIn={loggedIn}
                 onSideBarOpen={handleOpenSideBarMenu}
             />
 

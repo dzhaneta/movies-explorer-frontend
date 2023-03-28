@@ -1,6 +1,8 @@
-import React, { useState } from 'react'; 
-import { Route, Switch } from "react-router-dom";
-import { LoggedInContext } from "../../contexts/LoggedInContext";
+import React, { useEffect, useState } from 'react'; 
+import { Route, Switch, useHistory } from "react-router-dom";
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import MainApi from '../../utils/MainApi';
+import { currentUserContext } from '../../contexts/currentUserContex';
 import NotFound from '../NotFound/NotFound';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
@@ -12,58 +14,97 @@ import './App.css';
 
 function App() {
 
-  const [ loggedIn ] = useState(true); // manual switcher
+  const history = useHistory();
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  const [user, setUser] = React.useState({
+  const [currentUser, setCurrentUser] = React.useState({
     name: 'Виталий',
     email: 'vitalyi@mail.ru',
   });
+
+  // already logged-in checkup
+  useEffect(() => {
+    MainApi
+      .checkToken()
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);  
+
+  // set user info if logged-in
+
+  useEffect(() => {
+    if (!loggedIn) {
+      return;
+    }
+
+    MainApi
+      .getUserInfo()
+      .then((res) => {
+        if (res) {
+          setCurrentUser(res);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loggedIn]);
+
+
 
   return (
     <div className="page">
       <div className="page__container">
 
-        <Switch>
+        <currentUserContext.Provider value={currentUser}>
 
-          <Route path="/signin">
-            <Login />
-          </Route>
+          <Switch>
 
-          <Route path="/signup">
-            <Register />
-          </Route>
-
-          <LoggedInContext.Provider value={loggedIn}>
-
-            <Route path="/movies">
-              <Movies />
-            </Route>
-
-            <Route path="/saved-movies">
-              <SavedMovies />
-            </Route>
-
-            <Route path="/profile">
-              <Profile 
-                user={user}
-                onSubmit={setUser}
+              <ProtectedRoute
+                path="/movies"
+                loggedIn={loggedIn}
+                component={Movies}
               />
+
+              <ProtectedRoute
+                path="/saved-movies"
+                loggedIn={loggedIn}
+                component={SavedMovies}
+              />
+
+              <ProtectedRoute
+                path="/profile"
+                loggedIn={loggedIn}
+                component={Profile}
+                onSubmit={setCurrentUser}
+              />
+
+            <Route path="/signin">
+              <Login />
+            </Route>
+
+            <Route path="/signup">
+              <Register />
             </Route>
 
             <Route exact path="/">
-              <Main />
+              <Main loggedIn={loggedIn} />
             </Route>
 
-          </LoggedInContext.Provider>
+            <Route path="*">
+                <NotFound />
+            </Route>
 
-          <Route path="*">
-              <NotFound />
-          </Route>
+          </Switch>
 
-        </Switch>
+        </currentUserContext.Provider>
 
       </div>
-
     </div>
   );
 }

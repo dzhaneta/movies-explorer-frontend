@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { currentUserContext } from '../../contexts/currentUserContex';
 import Header from '../Header/Header';
 import SideBarMenu from '../SideBarMenu/SideBarMenu';
 
-function Profile({ user, onSubmit}) {
+function Profile({ loggedIn, onSubmit}) {
+
+    const user = React.useContext(currentUserContext);
 
     // form states & handlers
 
@@ -32,6 +35,7 @@ function Profile({ user, onSubmit}) {
     return (
         <>
             <Header 
+                loggedIn={loggedIn}
                 onSideBarOpen={handleOpenSideBarMenu}
             />
 

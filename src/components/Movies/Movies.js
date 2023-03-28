@@ -7,7 +7,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import moviesList from '../../utils/moviesList';
 
-function Movies() {
+function Movies({ loggedIn }) {
 
     const [isLoading] = useState(false);
 
@@ -24,6 +24,7 @@ function Movies() {
     return (
         <>
             <Header
+                loggedIn={loggedIn}
                 onSideBarOpen={handleOpenSideBarMenu}
             />
 

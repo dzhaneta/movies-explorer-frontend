@@ -6,7 +6,7 @@ import Navigation from "../Navigation/Navigation";
 import ProfileTab from "../ProfileTab/ProfileTab";
 
 
-function Header({ onSideBarOpen }) {
+function Header({ loggedIn, onSideBarOpen }) {
 
     const location = useLocation();
 
@@ -19,9 +19,9 @@ function Header({ onSideBarOpen }) {
         >
             <Logo />
 
-            <Navigation />
+            {loggedIn && <Navigation />}
 
-            <ProfileTab />
+            <ProfileTab loggedIn={loggedIn} />
 
             <button 
                 className="header__burgermenu"
@@ -34,15 +34,3 @@ function Header({ onSideBarOpen }) {
 }
 
 export default Header;
-
-
-
-<header>
-    <logo></logo>
-
-    <overlay>
-        <nav></nav>
-        <account></account>
-    </overlay>
-    
-</header>
