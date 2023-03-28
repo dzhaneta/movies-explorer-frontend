@@ -21,6 +21,11 @@
     line-height: 34px;
 }
 
+.search-form__input:focus {
+    border-bottom: 1px solid #2BE080;
+    outline: none;
+}
+
 .search-form__input::placeholder {
     color: #A0A0A0;
 }
