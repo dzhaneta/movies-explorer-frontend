@@ -28,6 +28,7 @@ function Login() {
 
   return (
     <AuthPage
+      page='login'
       title='Рады видеть!'
       submitButtonText='Войти'
       additional={additional}

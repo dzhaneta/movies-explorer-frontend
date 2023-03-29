@@ -11,7 +11,7 @@ import './App.css';
 
 function App() {
 
-  const [ loggedIn ] = useState(true); // manual switcher
+  const [ loggedIn ] = useState(false); // manual switcher
 
   const [user, setUser] = React.useState({
     name: 'Виталий',

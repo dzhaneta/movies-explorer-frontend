@@ -48,6 +48,14 @@
     border: none;
 }
 
+.auth-page__api-error {
+    min-height: 17px;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #EE3465;
+}
+
 
 .auth-page__submit-button {
     font-size: 14px;

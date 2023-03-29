@@ -5,6 +5,7 @@ import Logo from '../Logo/Logo';
 import AuthInput from '../AuthInput/AuthInput';
 
 function AuthPage({
+  page,
   title,
   submitButtonText,
   additional,
@@ -34,7 +35,7 @@ function AuthPage({
         className='auth-page__form'
       >
 
-        <fieldset className='auth-page__inputs'>
+        <fieldset className={`auth-page__inputs ${page}__inputs`}>
 
           {inputs &&
             inputs.map((input) => (
@@ -61,7 +62,8 @@ function AuthPage({
 
         </fieldset>
 
-        <span className="error"></span>
+        <span className="auth-page__api-error">
+        </span>
 
         <button
           className={`

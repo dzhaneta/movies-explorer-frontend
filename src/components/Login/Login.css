@@ -1,0 +1,9 @@
+.login__inputs {
+    padding: 0 0 166px;
+}
+
+@media screen and (max-width: 425px) {
+    .login__inputs {
+        padding: 0 0 254px;
+    }
+}

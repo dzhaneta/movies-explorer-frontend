@@ -38,6 +38,7 @@ function Register() {
 
   return (
     <AuthPage
+      page='register'
       title='Добро пожаловать!'
       submitButtonText='Зарегистрироваться'
       additional={additional}
