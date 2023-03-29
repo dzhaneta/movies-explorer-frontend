@@ -75,6 +75,8 @@ function Profile({ user, loggedIn, onSubmit}) {
 
                     </fieldset>
 
+                    <span className="profile__api-error"></span>
+
                     <button
                         className='
                             profile__button 

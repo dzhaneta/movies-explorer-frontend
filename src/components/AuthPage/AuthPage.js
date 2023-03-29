@@ -62,8 +62,7 @@ function AuthPage({
 
         </fieldset>
 
-        <span className="auth-page__api-error">
-        </span>
+        <span className="auth-page__api-error"></span>
 
         <button
           className={`
