@@ -41,6 +41,14 @@
     border: none;
 }
 
+.auth-page__api-error {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #EE3465;
+}
+
 .auth-page__submit-button {
     margin: 14px 0;
     padding: 15px 0;

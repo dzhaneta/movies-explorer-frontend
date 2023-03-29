@@ -1,7 +1,11 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
 
-function Login() {
+function Login({ onLogin, apiErrorMessage, setApiErrorMessage }) {
+
+  function handleLoginSubmit(values) {
+    onLogin(values);
+  }
 
   const inputs = [
     {
@@ -26,10 +30,13 @@ function Login() {
 
   return (
     <AuthPage
+      onSubmit={handleLoginSubmit}
       title='Рады видеть!'
       submitButtonText='Войти'
       additional={additional}
       inputs={inputs}
+      apiErrorMessage={apiErrorMessage}
+      setApiErrorMessage={setApiErrorMessage}
     />
   );
 }

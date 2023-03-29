@@ -23,10 +23,12 @@ function Header({ loggedIn, onSideBarOpen }) {
 
             <ProfileTab loggedIn={loggedIn} />
 
-            <button 
-                className="header__burgermenu"
-                onClick={onSideBarOpen}>
-            </button>
+            {loggedIn &&
+                <button 
+                    className="header__burgermenu"
+                    onClick={onSideBarOpen}>
+                </button>
+            }
 
         </header>
     );

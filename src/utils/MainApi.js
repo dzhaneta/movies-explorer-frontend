@@ -10,7 +10,7 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return res.json().then((res) => Promise.reject(new Error(res.message)))
     }
 
     // Check token
@@ -26,15 +26,15 @@ class Api {
 
     // Register
   
-    register(name, email, password) {
+    register(data) {
         return fetch(`${this._baseUrl}/signup`, {
             method: 'POST',
             headers: this._headers,
             credentials: 'include',
             body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password,
+                name: data.name,
+                email: data.email,
+                password: data.password,
             })
         })
         .then(this._checkResponse)
@@ -42,14 +42,14 @@ class Api {
 
     // Login
   
-    login(email, password) {
+    login(data) {
         return fetch(`${this._baseUrl}/signin`, {
             method: 'POST',
             headers: this._headers,
             credentials: 'include',
             body: JSON.stringify({
-                email: email,
-                password: password,
+                email: data.email,
+                password: data.password,
             })
         })
         .then(this._checkResponse)

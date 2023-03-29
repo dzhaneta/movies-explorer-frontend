@@ -1,7 +1,11 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
 
-function Register() {
+function Register({ onRegister, apiErrorMessage, setApiErrorMessage }) {  
+
+  function handleRegisterSubmit(values) {
+    onRegister(values);
+  }
 
   const inputs = [
     {
@@ -38,10 +42,13 @@ function Register() {
 
   return (
     <AuthPage
+      onSubmit={handleRegisterSubmit}
       title='Добро пожаловать!'
       submitButtonText='Зарегистрироваться'
       additional={additional}
       inputs={inputs}
+      apiErrorMessage={apiErrorMessage}
+      setApiErrorMessage={setApiErrorMessage}
     />
   );
 }

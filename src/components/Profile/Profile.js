@@ -3,7 +3,11 @@ import { currentUserContext } from '../../contexts/currentUserContex';
 import Header from '../Header/Header';
 import SideBarMenu from '../SideBarMenu/SideBarMenu';
 
-function Profile({ loggedIn, onSubmit}) {
+function Profile({
+    loggedIn,
+    onSubmit,
+    onSignOut
+}) {
 
     const user = React.useContext(currentUserContext);
 
@@ -89,6 +93,7 @@ function Profile({ loggedIn, onSubmit}) {
                     </button>
 
                     <button
+                        onClick={onSignOut}
                         className='
                             profile__button
                             profile__button_type_logout

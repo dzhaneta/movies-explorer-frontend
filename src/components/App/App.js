@@ -15,11 +15,15 @@ import './App.css';
 function App() {
 
   const history = useHistory();
-  const [loggedIn, setLoggedIn] = useState(false);
 
-  const [currentUser, setCurrentUser] = React.useState({
-    name: 'Виталий',
-    email: 'vitalyi@mail.ru',
+  // user states
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+
+  // api errors states
+  const [apiErrorMessage, setApiErrorMessage] = useState({
+    message: '',
+    type: '',
   });
 
   // already logged-in checkup
@@ -55,6 +59,52 @@ function App() {
       });
   }, [loggedIn]);
 
+  // auth handlers
+
+  function handleRegister(data) {
+    MainApi
+      .register(data)
+      .then(() => {
+        handleLogin(data);
+      })
+      .catch((err) => {
+        setApiErrorMessage({
+          message: err.message,
+          type: 'error',
+        });
+      });
+  }
+
+  function handleLogin(data) {
+    MainApi
+      .login(data)
+      .then(() => {
+        setLoggedIn(true);
+        history.push("/movies");
+      })
+      .catch((err) => {
+        setApiErrorMessage({
+          message: err.message,
+          type: 'error',
+        });
+      });
+  }
+
+  function handleSignOut() {
+    MainApi
+      .logout()
+      .then(() => {
+        setLoggedIn(false);
+        setCurrentUser({});
+        history.push("/");
+      })
+      .catch((err) => {
+        setApiErrorMessage({
+          message: err.message,
+          type: 'error',
+        });
+      });
+  }
 
 
   return (
@@ -80,16 +130,25 @@ function App() {
               <ProtectedRoute
                 path="/profile"
                 loggedIn={loggedIn}
+                onSignOut={handleSignOut}
                 component={Profile}
                 onSubmit={setCurrentUser}
               />
 
             <Route path="/signin">
-              <Login />
+              <Login
+                onLogin={handleLogin}
+                apiErrorMessage={apiErrorMessage}
+                setApiErrorMessage={setApiErrorMessage}
+              />
             </Route>
 
             <Route path="/signup">
-              <Register />
+              <Register
+                onRegister={handleRegister}
+                apiErrorMessage={apiErrorMessage}
+                setApiErrorMessage={setApiErrorMessage}
+              />
             </Route>
 
             <Route exact path="/">

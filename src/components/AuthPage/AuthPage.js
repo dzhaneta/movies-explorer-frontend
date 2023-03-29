@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 import Logo from '../Logo/Logo';
@@ -9,16 +9,33 @@ function AuthPage({
   submitButtonText,
   additional,
   inputs,
+  onSubmit,
+  apiErrorMessage,
+  setApiErrorMessage
 }) {
 
   const { values, handleChange, errors, isValid } = useFormWithValidation();
 
+  useEffect(() => {
+    setApiErrorMessage({
+      message: '',
+      type: '',
+    });
+  }, [setApiErrorMessage]);
 
-  function handleSubmit(e) {
+  function handleFormSubmit(e) {
     e.preventDefault();
-    console.log('submit: ', values); // temporary for funcionality
+    onSubmit(values);
   }
 
+  function handleInputChange(e) {
+    handleChange(e);
+    apiErrorMessage &&
+      setApiErrorMessage({
+        message: '',
+        type: '',
+      });
+  }
 
   return (
     <main className='auth-page'>
@@ -31,7 +48,7 @@ function AuthPage({
       </div>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         className='auth-page__form'
         
       >
@@ -42,6 +59,7 @@ function AuthPage({
             inputs.map((input) => (
 
               <AuthInput
+                onChange={handleInputChange}
                 label={input.label}
                 value={
                   values && values[input.name]
@@ -54,7 +72,6 @@ function AuthPage({
                 pattern={input.pattern}
                 minLength={input.minLength}
                 maxLength={input.maxLength}
-                onChange={handleChange}
                 errorMessage={errors[input.name]}
                 key={input.name}
               />
@@ -63,7 +80,13 @@ function AuthPage({
 
         </fieldset>
 
-        <span className="api-error"></span>
+        <span className={`
+          auth-page__api-error 
+          api-error_type_${apiErrorMessage.type}
+          `}
+        >
+          {apiErrorMessage.message}
+        </span>
 
         <button
           className={`
