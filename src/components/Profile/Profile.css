@@ -74,7 +74,9 @@
 }
 
 .profile__input-error {
+    margin: 0;
     min-height: 16px;
+    box-sizing: border-box;
     text-align: center;
     color: #EE3465;
     font-weight: 400;

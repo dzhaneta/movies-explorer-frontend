@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { currentUserContext } from '../../contexts/currentUserContex';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 import Header from '../Header/Header';
@@ -12,16 +12,31 @@ function Profile({
     setApiErrorMessage
 }) {
 
-    const user = React.useContext(currentUserContext);
+    const user = useContext(currentUserContext);
 
     // form states & handlers
+    const { 
+        values,
+        handleChange,
+        setValues,
+        errors,
+        isValid,
+        setIsValid
+    } = useFormWithValidation();
 
-    const { values, handleChange, setValues, errors, isValid } = useFormWithValidation();
-
+    // set current user values
     useEffect(() => {
-        user && user.email && setValues(user);
-      }, [user, setValues]);
+        user && setValues(user);
+    }, [user, setValues]);
 
+    // check values are not the same
+    useEffect(() => {
+        if (user.name === values.name && user.email === values.email) {
+          setIsValid(false);
+        }
+    }, [user, setIsValid, values]);
+
+    // set api error  
     useEffect(() => {
       setApiErrorMessage({
         message: '',
@@ -79,9 +94,13 @@ function Profile({
                             <input
                                 onChange={handleInputChange}
                                 type='text'
-                                value={values.name || ""}
+                                value={values.name || ''}
                                 name='name'
                                 required
+                                pattern='[- А-Яа-яA-Za-zё]+$'
+                                minLength='2'
+                                maxLength='30'
+                                placeholder='Ivan Ivanov'
                                 className='profile__input'
                             />
                         </label>
@@ -98,13 +117,13 @@ function Profile({
                             <input
                                 onChange={handleInputChange}
                                 type='text'
-                                value={values.email || ""}
+                                value={values.email || ''}
                                 name='email'
                                 required
                                 className='profile__input'
                             />
                         </label>
-                        <span className="profile__input-error-message">
+                        <span className="profile__input-error">
                             {errors.email}
                         </span>
 
@@ -122,12 +141,7 @@ function Profile({
                         className={`
                             profile__button 
                             profile__button_active
-                            ${!isValid && 
-                                (values.name === user.name || 
-                                    values.email === user.email
-                                ) &&
-                            'profile__button_inactive'
-                            }
+                            ${!isValid && 'profile__button_inactive'}
                         `}
                         type='submit'
                     >
@@ -139,10 +153,8 @@ function Profile({
                         className={`
                             profile__button
                             profile__button_type_logout
-                            
                         `}
                         type='button'
-                        disabled={!isValid}
                     >
                         Выйти из аккаунта
                     </button>
