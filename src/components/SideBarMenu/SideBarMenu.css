@@ -1,0 +1,40 @@
+.sidebar {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    right: 0px;
+    min-width: 520px;
+    height: 100%;
+    background-color: #fff;
+}
+
+@media screen and (max-width: 520px) {
+    .sidebar {
+       min-width: 100%;
+    }
+} 
+
+.sidebar_open {
+    display: flex;
+}
+
+.sidebar__close-button {
+    align-self: flex-end;
+    margin: 22.44px 22.44px 0 0;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    background-image: url(../../images/icon_closemenu.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+}
+
+.sidebar__close-button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}

@@ -1,0 +1,44 @@
+.header {
+    position: relative;
+    padding: 18px 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 15px 30px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header {
+        padding: 15px 14px;
+    }
+}  
+
+.header_colored {
+    background-color: #5C5C5C;
+}
+
+.header__burgermenu {
+    display: none;
+    width: 28px;
+    height: 23px;
+    background-image: url(../../images/icon_burgermenu.svg);
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+}
+
+.header__burgermenu:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .header__burgermenu {
+        display: block;
+    }
+}  

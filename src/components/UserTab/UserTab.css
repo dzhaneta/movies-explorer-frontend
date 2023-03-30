@@ -1,0 +1,50 @@
+.usertab {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 32px;
+    min-width: 100px;
+    border-radius: 40px;
+    box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+}
+
+.usertab_vertical {
+    position: absolute;
+    bottom: 90px;
+}
+
+@media screen and (max-width: 320px) {
+    .usertab_vertical {
+        bottom: 46px;
+    }
+}  
+
+.usertab:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+
+
+.usertab__username {
+    margin: 0;
+    padding-left: 11px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 12px;
+}
+
+.usertab__icon {
+    margin: 3px 3px 3px 7px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50px;
+    background-color: #F9F9F9;
+    background-image: url(../../images/icon_account.svg);
+    background-position: center;
+    background-size: 11px;
+    background-repeat: no-repeat;
+}

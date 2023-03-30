@@ -1,0 +1,139 @@
+
+.auth-page {
+    margin: 0;
+    padding: 0 30px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.auth-page__title-container {
+    margin: 0;
+    padding: 70px 0 40px;
+    min-width: 396px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.auth-page__title {
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+}
+
+
+.auth-page__form {
+    min-width: 396px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    
+}
+
+.auth-page__inputs {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    border: none;
+}
+
+.auth-page__api-error {
+    min-height: 17px;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #EE3465;
+}
+
+
+.auth-page__submit-button {
+    font-size: 14px;
+    line-height: 17px;
+    margin: 14px 0;
+    padding: 15px 0;
+    border: none;
+    border-radius: 3px;
+    background-color: #2BE080;
+    font-weight: 500;
+    text-align: center;
+    color: #fff;
+}
+
+.auth-page__submit-button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.auth-page__submit-button_inactive {
+    background-color: #F8F8F8;
+    color: #C2C2C2;
+}
+
+
+.auth-page__extra {
+    font-size: 14px;
+    line-height: 17px;
+    padding-bottom: 70px;
+    align-self: center;
+    margin: 0;
+    font-weight: 400;
+    color: #A0A0A0;
+}
+
+.auth-page__auth-link {
+    padding-left: 6px;
+    color: #2BE080;
+    text-decoration: none;
+}
+
+.auth-page__auth-link:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+ 
+@media screen and (max-width: 768px) {
+
+    .auth-page__title-container {
+        padding: 232px 0 40px;
+    }
+
+    .auth-page__extra {
+        padding-bottom: 232px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+
+    .auth-page__title-container {
+        padding: 56px 0 80px;
+        align-items: center;
+        gap: 50px;
+    }
+
+    .auth-page__form {
+        min-width: 260px;
+    }
+
+    .auth-page__submit-button {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .auth-page__extra {
+        padding-bottom: 30px;
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+

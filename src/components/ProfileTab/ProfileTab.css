@@ -1,0 +1,64 @@
+.profile-tab {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+@media screen and (max-width: 320px) {
+    .profile-tab {
+        gap: 14px;
+    }
+} 
+
+@media screen and (max-width: 768px) {
+    .profile-tab_logged {
+        display: none;
+    }
+} 
+
+.profile-tab__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 320px) {
+    .profile-tab__link {
+        font-size: 10px;
+        line-height: 16px;
+    }
+}  
+
+.profile-tab__link:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.profile-tab__link_signup {
+    color: #fff;
+}
+
+.profile-tab__link_signin {
+    width: 76px;
+    height: 32px;
+    border-radius: 3px;
+    background-color: #2BE080;
+    color: #000;
+}
+
+.profile-tab__link_signin:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 320px) {
+    .profile-tab__link_signin {
+        width: 54px;
+        height: 26px;
+    }
+}  
+
