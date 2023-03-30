@@ -38,7 +38,11 @@ function SavedMovies({ loggedIn }) {
                 {isLoading
                 ? <Preloader />
                 : <>
-                    <div className="movies__movies-list">
+                    <div className="
+                        movies__movies-list
+                        saved-movies__movies-list
+                        "
+                    >
                         <MoviesCardList 
                             cards={savedMoviesList}
                             type={'saved-movies'}

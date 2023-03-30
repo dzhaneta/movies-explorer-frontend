@@ -3,8 +3,7 @@
 }
 
 .movies__search-form {
-    padding: 80px 0;
-    border-bottom: solid 1px #E8E8E8;
+    padding: 70px 0 47px;
 }
 
 .movies__movies-list {
@@ -40,8 +39,15 @@
         padding: 0 30px;
     }
 
+    .movies__movies-list {
+        padding: 70px 30px 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
     .movies__search-form {
-        padding: 60px 0;
+        padding: 80px 0 60px;
     }
 
     .movies__movies-list {
@@ -49,21 +55,19 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 425px) {
     .movies__search-form-wrap {
-        padding: 0 10px 0;
+        padding: 0 14px;
     }
 
     .movies__search-form {
-        padding: 60px 0 44px;
+        padding: 84px 0 50px;
     }
 
     .movies__movies-list {
         padding: 40px 10px 0;
     }
-}
 
-@media screen and (max-width: 425px) {
     .movies__more-button {
         width: 240px;
     }

@@ -21,6 +21,16 @@
 
 @media screen and (max-width: 768px) {
     .movies-card-list {
+        gap: 30px;
+    }
+
+    .movies-card-list__item {
+        width: calc((100% - 30px) / 2);
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .movies-card-list {
         flex-direction: column;
         gap: 34px;
     }

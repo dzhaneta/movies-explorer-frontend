@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-function Navigation({ vertical }) {
+function Navigation({ loggedIn,  vertical }) {
 
     const location = useLocation();
 
@@ -9,6 +9,7 @@ function Navigation({ vertical }) {
         <nav 
             className={`
                 navigation 
+                ${ ( !loggedIn === true ) && 'navigation_hidden'}
                 ${vertical && 'navigation_vertical'}
             `}
         >

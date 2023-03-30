@@ -3,6 +3,7 @@
     align-items: center;
     gap: 14px;
     font-size: 13px;
+    line-height: 18px;
 }
 
 .filter-checkbox__switch {
@@ -12,8 +13,12 @@
     width: 36px;
     height: 20px;
     background-color: #EBEBEB;
-    border-radius: 50px;
+    border-radius: 20px;
     transition: all 0.2s;
+}
+
+.filter-checkbox__switch:hover {
+    cursor: pointer;
 }
 
 .filter-checkbox__switch::after {
@@ -25,7 +30,7 @@
     width: 16px;
     height: 16px;
     background-color: #F5F5F5;
-    border-radius: 50%;
+    border-radius: 20px;
     margin: auto;
     transition: all 0.2s;
 }
@@ -41,6 +46,15 @@
 
 @media screen and (max-width: 768px) {
     .filter-checkbox {
+        flex-direction: row-reverse;
+        gap: 16px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .filter-checkbox {
+        justify-content: center;
+        gap: 13px;
         font-size: 11px;
     }
 }

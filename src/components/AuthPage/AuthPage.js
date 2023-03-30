@@ -5,6 +5,7 @@ import Logo from '../Logo/Logo';
 import AuthInput from '../AuthInput/AuthInput';
 
 function AuthPage({
+  page,
   title,
   submitButtonText,
   additional,
@@ -53,7 +54,7 @@ function AuthPage({
         
       >
 
-        <fieldset className='auth-page__inputs'>
+        <fieldset className={`auth-page__inputs ${page}__inputs`}>
 
           {inputs &&
             inputs.map((input) => (

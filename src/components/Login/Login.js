@@ -11,13 +11,15 @@ function Login({ onLogin, apiErrorMessage, setApiErrorMessage }) {
     {
       label: 'E-mail',
       name: 'email',
-      type: 'text',
+      type: 'email',
+      placeholder: 'ivanov@mail.ru',
       errorMessage: '',
     },
     {
       label: 'Пароль',
       name: 'password',
       type: 'password',
+      placeholder: 'Введите пароль',
       errorMessage: 'Что-то пошло не так...',
     },
   ];
@@ -31,6 +33,7 @@ function Login({ onLogin, apiErrorMessage, setApiErrorMessage }) {
   return (
     <AuthPage
       onSubmit={handleLoginSubmit}
+      page='login'
       title='Рады видеть!'
       submitButtonText='Войти'
       additional={additional}

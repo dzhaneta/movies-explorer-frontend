@@ -1,0 +1,9 @@
+.register__inputs {
+    padding: 0 0 103px;
+}
+
+@media screen and (max-width: 425px) {
+    .register__inputs {
+        padding: 0 0 191px;
+    }
+}

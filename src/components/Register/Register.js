@@ -43,6 +43,7 @@ function Register({ onRegister, apiErrorMessage, setApiErrorMessage }) {
   return (
     <AuthPage
       onSubmit={handleRegisterSubmit}
+      page='register'
       title='Добро пожаловать!'
       submitButtonText='Зарегистрироваться'
       additional={additional}
