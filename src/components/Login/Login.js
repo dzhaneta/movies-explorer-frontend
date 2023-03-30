@@ -19,6 +19,7 @@ function Login({ onLogin, apiErrorMessage, setApiErrorMessage }) {
       label: 'Пароль',
       name: 'password',
       type: 'password',
+      pattern: '/^\S+@\S+\.\S+$/',
       placeholder: 'Введите пароль',
       errorMessage: 'Что-то пошло не так...',
     },

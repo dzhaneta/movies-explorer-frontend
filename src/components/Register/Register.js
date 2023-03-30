@@ -22,6 +22,7 @@ function Register({ onRegister, apiErrorMessage, setApiErrorMessage }) {
       label: 'E-mail',
       name: 'email',
       type: 'email',
+      pattern: '/^\S+@\S+\.\S+$/',
       placeholder: 'ivanov@mail.ru',
       errorMessage: '',
     },

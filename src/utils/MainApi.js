@@ -79,14 +79,14 @@ class Api {
   
     // Save profile
   
-    setUserInfo(name, email) {
+    setUserInfo(data) {
       return fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
         headers: this._headers,
         credentials: 'include',
         body: JSON.stringify({
-          name: name,
-          email: email
+          name: data.name,
+          email: data.email
         })
       })
       .then(this._checkResponse)

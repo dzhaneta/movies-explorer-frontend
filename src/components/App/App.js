@@ -28,6 +28,7 @@ function App() {
 
   // already logged-in checkup
   useEffect(() => {
+    console.log('работает проверка токена');
     MainApi
       .checkToken()
       .then((res) => {
@@ -43,7 +44,9 @@ function App() {
   // set user info if logged-in
 
   useEffect(() => {
+    console.log('работает установка текущего юзера');
     if (!loggedIn) {
+      console.log('юзер не установлен');
       return;
     }
 
@@ -53,6 +56,7 @@ function App() {
         if (res) {
           setCurrentUser(res);
         }
+        console.log('юзер установлен');
       })
       .catch((err) => {
         console.log(err);
@@ -106,6 +110,20 @@ function App() {
       });
   }
 
+  function handleUpdateUser(data) {
+    MainApi
+      .setUserInfo(data)
+      .then((res) => {
+        setCurrentUser(res);
+      })
+      .catch((err) => {
+        setApiErrorMessage({
+          message: err.message,
+          type: 'error',
+        });
+      });
+  }
+
 
   return (
     <div className="page">
@@ -115,27 +133,27 @@ function App() {
 
           <Switch>
 
-              <ProtectedRoute
-                path="/movies"
-                loggedIn={loggedIn}
-                component={Movies}
-              />
+            <ProtectedRoute
+              path="/movies"
+              loggedIn={loggedIn}
+              component={Movies}
+            />
 
-              <ProtectedRoute
-                path="/saved-movies"
-                loggedIn={loggedIn}
-                component={SavedMovies}
-              />
+            <ProtectedRoute
+              path="/saved-movies"
+              loggedIn={loggedIn}
+              component={SavedMovies}
+            />
 
-              <ProtectedRoute
-                path="/profile"
-                loggedIn={loggedIn}
-                onSignOut={handleSignOut}
-                apiErrorMessage={apiErrorMessage}
-                setApiErrorMessage={setApiErrorMessage}
-                component={Profile}
-                onUpdateUser={setCurrentUser}
-              />
+            <ProtectedRoute
+              path="/profile"
+              loggedIn={loggedIn}
+              onSignOut={handleSignOut}
+              apiErrorMessage={apiErrorMessage}
+              setApiErrorMessage={setApiErrorMessage}
+              component={Profile}
+              onUpdateUser={handleUpdateUser}
+            />
 
             <Route path="/signin">
               <Login

@@ -51,7 +51,6 @@ function Profile({
   
     function handleInputChange(e) {
       handleChange(e);
-        console.log(errors);
       apiErrorMessage &&
         setApiErrorMessage({
           message: '',
@@ -120,6 +119,7 @@ function Profile({
                                 value={values.email || ''}
                                 name='email'
                                 required
+                                pattern='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
                                 className='profile__input'
                             />
                         </label>

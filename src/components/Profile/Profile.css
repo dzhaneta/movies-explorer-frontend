@@ -49,7 +49,7 @@
 }
 
 .profile__label:last-of-type {
-    padding: 16px 0 0;
+    padding: 0;
     border-bottom: none;
 }
 
@@ -63,6 +63,8 @@
     background-color: transparent;
     font-family: inherit;
     font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
     text-align: right;
 }
 
@@ -80,8 +82,8 @@
     text-align: center;
     color: #EE3465;
     font-weight: 400;
-    font-size: 13px;
-    line-height: 16px;
+    font-size: 11px;
+    line-height: 13px;
 }
 
 .profile__api-error {
