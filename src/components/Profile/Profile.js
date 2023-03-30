@@ -1,29 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { currentUserContext } from '../../contexts/currentUserContex';
+import { useFormWithValidation } from '../../utils/useFormWithValidation';
 import Header from '../Header/Header';
 import SideBarMenu from '../SideBarMenu/SideBarMenu';
 
 function Profile({
     loggedIn,
-    onSubmit,
-    onSignOut
+    onUpdateUser,
+    onSignOut,
+    apiErrorMessage,
+    setApiErrorMessage
 }) {
 
     const user = React.useContext(currentUserContext);
 
     // form states & handlers
 
-    const [input, setInput] = useState(user);
+    const { values, handleChange, setValues, errors, isValid } = useFormWithValidation();
 
-    function handleChangeInput(e) {
-        setInput({ ...input, [e.target.name]: e.target.value });
+    useEffect(() => {
+        user && user.email && setValues(user);
+      }, [user, setValues]);
+
+    useEffect(() => {
+      setApiErrorMessage({
+        message: '',
+        type: '',
+      });
+    }, [setApiErrorMessage]);
+  
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      onUpdateUser(values);
     }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        onSubmit(input);
+  
+    function handleInputChange(e) {
+      handleChange(e);
+        console.log(errors);
+      apiErrorMessage &&
+        setApiErrorMessage({
+          message: '',
+          type: '',
+        });
     }
-
+  
     // sidebar states & handlers
     
     const [isSideBarOpen, setSideBarOpen] = useState(false);
@@ -48,7 +68,7 @@ function Profile({
                 <h1 className='profile__title'>Привет, {user.name}!</h1>
 
                 <form
-                    onSubmit={handleSubmit}
+                    onSubmit={handleFormSubmit}
                     className='profile__form'
                 >
 
@@ -57,36 +77,58 @@ function Profile({
                         <label className='profile__label'>
                             Имя
                             <input
+                                onChange={handleInputChange}
                                 type='text'
-                                value={input.name}
+                                value={values.name || ""}
                                 name='name'
                                 required
-                                onChange={handleChangeInput}
                                 className='profile__input'
                             />
                         </label>
-                        <span className="profile__input-error-message"></span>
+                        <span 
+                            className={`
+                                profile__input-error
+                            `}
+                        >
+                            {errors.name}
+                        </span>
                         
                         <label className='profile__label'>
                             E-mail
                             <input
+                                onChange={handleInputChange}
                                 type='text'
-                                value={input.email}
+                                value={values.email || ""}
                                 name='email'
                                 required
-                                onChange={handleChangeInput}
                                 className='profile__input'
                             />
                         </label>
-                        <span className="profile__input-error-message"></span>
+                        <span className="profile__input-error-message">
+                            {errors.email}
+                        </span>
 
                     </fieldset>
 
+                    <span className={`
+                        profile__api-error
+                        profile__api-error_type_${apiErrorMessage.type}
+                        `}
+                        >
+                        {apiErrorMessage.message}
+                    </span>
+
                     <button
-                        className='
+                        className={`
                             profile__button 
-                            profile__button_active 
-                        '
+                            profile__button_active
+                            ${!isValid && 
+                                (values.name === user.name || 
+                                    values.email === user.email
+                                ) &&
+                            'profile__button_inactive'
+                            }
+                        `}
                         type='submit'
                     >
                         Редактировать
@@ -94,11 +136,13 @@ function Profile({
 
                     <button
                         onClick={onSignOut}
-                        className='
+                        className={`
                             profile__button
                             profile__button_type_logout
-                        '
+                            
+                        `}
                         type='button'
+                        disabled={!isValid}
                     >
                         Выйти из аккаунта
                     </button>

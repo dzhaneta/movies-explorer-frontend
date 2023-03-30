@@ -131,8 +131,10 @@ function App() {
                 path="/profile"
                 loggedIn={loggedIn}
                 onSignOut={handleSignOut}
+                apiErrorMessage={apiErrorMessage}
+                setApiErrorMessage={setApiErrorMessage}
                 component={Profile}
-                onSubmit={setCurrentUser}
+                onUpdateUser={setCurrentUser}
               />
 
             <Route path="/signin">

@@ -107,6 +107,24 @@
     border-bottom: 1px solid #2BE080;
 }
 
+.profile__input-error {
+    min-height: 16px;
+    text-align: center;
+    color: #EE3465;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.profile__api-error {
+    min-height: 16px;
+    text-align: center;
+    color: #EE3465;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+}
+
 .profile__button {
     align-self: center;
     margin: 0;
@@ -122,6 +140,10 @@
 .profile__button:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+.profile__button_inactive {
+    color: #C2C2C2;
 }
 
 @media screen and (max-width: 425px) {
