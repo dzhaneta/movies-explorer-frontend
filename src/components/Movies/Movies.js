@@ -6,28 +6,81 @@ import SideBarMenu from '../SideBarMenu/SideBarMenu';
 import Preloader from '../Preloader/Preloader';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import moviesList from '../../utils/moviesList';
+import { filterByRequest } from '../../utils/functions';
 
 function Movies({ loggedIn }) {
 
-    const [isLoading] = useState(false);
+    const [searchInput, setSearchInput] = useState([]);
+    const [isFiltered, setIsFiltered] = useState(false);
+    const [cardsList, setCardsList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [isSideBarOpen, setSideBarOpen] = useState(false);
 
+    // search form & cards setup
     useEffect(() => {
-        // local storage inputs checkup
-   }, []);  
+        // search form setup
+        let previousInputs = getSearchInputsLocal();
+        if (previousInputs) {
+            console.log('searched before');
+            // searched before
+            console.log(previousInputs);
+            setSearchInputs(previousInputs);
+            // забрать карточки из локала и отрендерить если они есть
+        } else {
+            console.log('no search before');
+            // no search before then all cards setup
+            
+        }
+    }, []);  
 
-    function handleSearchSubmit(searchValues) {
+    // local save & read handlers
+    function saveSearchInputsLocal(values) {
+        localStorage.setItem('moviesSearchValues', JSON.stringify(values));
+    }
+
+    function getSearchInputsLocal() {
+        JSON.parse(localStorage.getItem('moviesSearchValues'));
+    }
+
+    function saveCardListLocal(cards) {
+        localStorage.setItem('movies', JSON.stringify(cards));
+    }
+
+    function getCardListLocal() {
+        JSON.parse(localStorage.getItem('movies'));
+    }
+
+    // MoviesApi requests
+    function getAllMovies() {
+        setIsLoading(true);
         MoviesApi
             .getCards()
             .then((data) => {
-                console.log(data);
+                console.log('all films get');
+                return data;
             })
             .catch((err) => {
                 console.log(err);
             });
     }
 
+    // search & filter handlers
+    function setSearchInputs(input) {
+        setSearchInput(input.request);
+        setIsFiltered(input.isChecked);
+    }
+
+    function handleSearchSubmit(values) {
+        saveSearchInputsLocal(values);
+        setSearchInputs(values);
+        getAllMovies();
+        // if none set gallery message
+        // filter
+        //save local
+        // render
+    }
+
+    // sidebar handlers
     function handleOpenSideBarMenu() {
         setSideBarOpen(true);
     }
@@ -51,6 +104,8 @@ function Movies({ loggedIn }) {
 
                     <div className="movies__search-form">
                         <SearchForm
+                            searchInput={searchInput}
+                            isFiltered={isFiltered}
                             onSubmit={handleSearchSubmit}
                         />
                     </div>
@@ -62,7 +117,7 @@ function Movies({ loggedIn }) {
                 : <>
                     <div className="movies__movies-list">
                     <MoviesCardList 
-                        cards={moviesList}
+                        cards={cardsList}
                         type={'movies'}
                         />
                     </div>

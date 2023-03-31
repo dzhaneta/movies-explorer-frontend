@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import iconLoupePath from '../../images/icon_loupe.svg'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 
 
 function SearchForm({
+    searchInput,
+    isFiltered,
     onSubmit,
-    isSearchDisabled
 }) {
     
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(isFiltered);
     const { values, errors, handleChange, isValid } = useFormWithValidation();
-    
 
     function handleInputChange(e) {
         handleChange(e);
@@ -24,8 +24,8 @@ function SearchForm({
     function handleSubmit(e) {
         
         e.preventDefault();
-        console.log(values.request, isChecked);
-        onSubmit({values, isChecked})
+        let request = values.request;
+        onSubmit({request, isChecked})
     }
 
     return (
@@ -39,7 +39,7 @@ function SearchForm({
 
                 <input
                     onChange={handleInputChange}
-                    value={values.request || ''}
+                    value={searchInput || values.request || ''}
                     required
                     name="request"
                     type="text"

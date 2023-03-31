@@ -16,7 +16,7 @@ class Api {
     // Get cards from MOVIES API
   
     getCards() {
-        return fetch(`${this._baseUrl}`, {
+        return fetch(`${this._baseUrl}/beatfilm-movies`, {
           method: 'GET',
           headers: this._headers,
         })
@@ -27,7 +27,7 @@ class Api {
   
   // MOVIES API
   const MoviesApi = new Api({
-    baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
+    baseUrl: 'https://api.nomoreparties.co',
     headers: {
       Accept: "application/json",
       'Content-Type': 'application/json'
