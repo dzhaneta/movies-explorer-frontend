@@ -11,18 +11,18 @@ function AuthPage({
   additional,
   inputs,
   onSubmit,
-  apiErrorMessage,
-  setApiErrorMessage
+  infoMessage,
+  setinfoMessage
 }) {
 
   const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   useEffect(() => {
-    setApiErrorMessage({
+    setinfoMessage({
       message: '',
       type: '',
     });
-  }, [setApiErrorMessage]);
+  }, [setinfoMessage]);
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -31,8 +31,8 @@ function AuthPage({
 
   function handleInputChange(e) {
     handleChange(e);
-    apiErrorMessage &&
-      setApiErrorMessage({
+    infoMessage &&
+      setinfoMessage({
         message: '',
         type: '',
       });
@@ -83,10 +83,10 @@ function AuthPage({
 
         <span className={`
           auth-page__api-error 
-          api-error_type_${apiErrorMessage.type}
+          api-error_type_${infoMessage.type}
           `}
         >
-          {apiErrorMessage.message}
+          {infoMessage.message}
         </span>
 
         <button

@@ -8,8 +8,8 @@ function Profile({
     loggedIn,
     onUpdateUser,
     onSignOut,
-    apiErrorMessage,
-    setApiErrorMessage
+    infoMessage,
+    setinfoMessage
 }) {
 
     const user = useContext(currentUserContext);
@@ -38,11 +38,11 @@ function Profile({
 
     // set api error  
     useEffect(() => {
-      setApiErrorMessage({
+      setinfoMessage({
         message: '',
         type: '',
       });
-    }, [setApiErrorMessage]);
+    }, [setinfoMessage]);
   
     function handleFormSubmit(e) {
       e.preventDefault();
@@ -51,8 +51,8 @@ function Profile({
   
     function handleInputChange(e) {
       handleChange(e);
-      apiErrorMessage &&
-        setApiErrorMessage({
+      infoMessage &&
+        setinfoMessage({
           message: '',
           type: '',
         });
@@ -129,10 +129,10 @@ function Profile({
 
                     <span className={`
                         profile__api-error
-                        profile__api-error_type_${apiErrorMessage.type}
+                        profile__api-error_type_${infoMessage.type}
                         `}
                         >
-                        {apiErrorMessage.message}
+                        {infoMessage.message}
                     </span>
 
                     <button

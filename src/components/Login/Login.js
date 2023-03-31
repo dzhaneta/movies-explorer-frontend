@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
 
-function Login({ onLogin, apiErrorMessage, setApiErrorMessage }) {
+function Login({ onLogin, infoMessage, setinfoMessage }) {
 
   function handleLoginSubmit(values) {
     onLogin(values);
@@ -39,8 +39,8 @@ function Login({ onLogin, apiErrorMessage, setApiErrorMessage }) {
       submitButtonText='Войти'
       additional={additional}
       inputs={inputs}
-      apiErrorMessage={apiErrorMessage}
-      setApiErrorMessage={setApiErrorMessage}
+      infoMessage={infoMessage}
+      setinfoMessage={setinfoMessage}
     />
   );
 }

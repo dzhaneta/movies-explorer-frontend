@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MoviesApi from "../../utils/MoviesApi";
 import Header from '../Header/Header';
 import Footer from "../Footer/Footer";
@@ -10,14 +10,22 @@ import moviesList from '../../utils/moviesList';
 
 function Movies({ loggedIn }) {
 
-    // const [request, setRequest] = useState(true);
-    // const [filter, setFilter] = useState(true);
-
     const [isLoading] = useState(false);
     const [isSideBarOpen, setSideBarOpen] = useState(false);
 
-    function handleSearchSubmit() {
-        
+    useEffect(() => {
+        // local storage inputs checkup
+   }, []);  
+
+    function handleSearchSubmit(searchValues) {
+        MoviesApi
+            .getCards()
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     function handleOpenSideBarMenu() {
@@ -28,14 +36,7 @@ function Movies({ loggedIn }) {
         setSideBarOpen(false);
     }
 
-    // MoviesApi
-    //   .getCards()
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    
 
     return (
         <>

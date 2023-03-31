@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import iconLoupePath from '../../images/icon_loupe.svg'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
@@ -10,25 +10,22 @@ function SearchForm({
 }) {
     
     const [isChecked, setIsChecked] = useState(false);
-    const { values, handleChange, isValid, setErrors } = useFormWithValidation();
+    const { values, errors, handleChange, isValid } = useFormWithValidation();
+    
 
     function handleInputChange(e) {
         handleChange(e);
-        console.log(values.request);
     }
-    
+
     function handleCheckboxChange(e) {
         setIsChecked(!isChecked);
-        console.log(isChecked);
     }
     
     function handleSubmit(e) {
         
         e.preventDefault();
         console.log(values.request, isChecked);
-        values.request
-          ? onSubmit(values, isChecked)
-          : setErrors('ошибка');
+        onSubmit({values, isChecked})
     }
 
     return (
@@ -44,20 +41,20 @@ function SearchForm({
                     onChange={handleInputChange}
                     value={values.request || ''}
                     required
-                    minLength="2"
                     name="request"
                     type="text"
                     placeholder="Фильм"
                     className="search-form__input"
                 />
-
+                
                 <span className="profile__input-error">
+                    {errors.request && 'Нужно ввести ключевое слово'}
                 </span>
 
                 <button 
                     type='submit'
                     className="search-form__button"
-                    disabled={!isValid || isSearchDisabled}
+                    disabled={!isValid}
                 >
                     <img src={iconLoupePath} alt="search_icon" />
                 </button>

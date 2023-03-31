@@ -22,7 +22,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
 
   // api errors states
-  const [apiErrorMessage, setApiErrorMessage] = useState({
+  const [infoMessage, setinfoMessage] = useState({
     message: '',
     type: '',
   });
@@ -78,7 +78,7 @@ function App() {
         handleLogin(data);
       })
       .catch((err) => {
-        setApiErrorMessage({
+        setinfoMessage({
           message: err.message,
           type: 'error',
         });
@@ -93,7 +93,7 @@ function App() {
         history.push("/movies");
       })
       .catch((err) => {
-        setApiErrorMessage({
+        setinfoMessage({
           message: err.message,
           type: 'error',
         });
@@ -109,7 +109,7 @@ function App() {
         history.push("/");
       })
       .catch((err) => {
-        setApiErrorMessage({
+        setinfoMessage({
           message: err.message,
           type: 'error',
         });
@@ -123,7 +123,7 @@ function App() {
         setCurrentUser(res);
       })
       .catch((err) => {
-        setApiErrorMessage({
+        setinfoMessage({
           message: err.message,
           type: 'error',
         });
@@ -154,8 +154,8 @@ function App() {
               path="/profile"
               loggedIn={loggedIn}
               onSignOut={handleSignOut}
-              apiErrorMessage={apiErrorMessage}
-              setApiErrorMessage={setApiErrorMessage}
+              infoMessage={infoMessage}
+              setinfoMessage={setinfoMessage}
               component={Profile}
               onUpdateUser={handleUpdateUser}
             />
@@ -163,16 +163,16 @@ function App() {
             <Route path="/signin">
               <Login
                 onLogin={handleLogin}
-                apiErrorMessage={apiErrorMessage}
-                setApiErrorMessage={setApiErrorMessage}
+                infoMessage={infoMessage}
+                setinfoMessage={setinfoMessage}
               />
             </Route>
 
             <Route path="/signup">
               <Register
                 onRegister={handleRegister}
-                apiErrorMessage={apiErrorMessage}
-                setApiErrorMessage={setApiErrorMessage}
+                infoMessage={infoMessage}
+                setinfoMessage={setinfoMessage}
               />
             </Route>
 
