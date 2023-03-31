@@ -17,6 +17,7 @@ function App() {
   const history = useHistory();
 
   // user states
+  const [isAuthed, setIsAuthed] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
 
@@ -33,6 +34,7 @@ function App() {
       .checkToken()
       .then((res) => {
         if (res) {
+          setIsAuthed(true);
           setLoggedIn(true);
         }
       })
@@ -62,6 +64,10 @@ function App() {
         console.log(err);
       });
   }, [loggedIn]);
+
+  if (!isAuthed) {
+    return null;
+  }
 
   // auth handlers
 
@@ -123,7 +129,6 @@ function App() {
         });
       });
   }
-
 
   return (
     <div className="page">

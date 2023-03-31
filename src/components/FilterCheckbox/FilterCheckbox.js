@@ -1,17 +1,18 @@
 function FilterCheckbox({ checked, onChange }) {
+    
     return (
         <div className="filter-checkbox">
             
             <input
+                name="filter"
                 className="filter-checkbox__switch"
                 type="checkbox"
-                value={checked}
+                checked={checked}
                 onChange={onChange}
-            />
-
-            <div className="filter-checkbox__label">
+            ></input>
+            <label className="filter-checkbox__label">
                 Короткометражки
-            </div>
+            </label>
 
         </div>
     );

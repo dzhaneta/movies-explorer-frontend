@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MoviesApi from "../../utils/MoviesApi";
 import Header from '../Header/Header';
 import Footer from "../Footer/Footer";
 import SideBarMenu from '../SideBarMenu/SideBarMenu';
@@ -9,9 +10,15 @@ import moviesList from '../../utils/moviesList';
 
 function Movies({ loggedIn }) {
 
-    const [isLoading] = useState(false);
+    // const [request, setRequest] = useState(true);
+    // const [filter, setFilter] = useState(true);
 
+    const [isLoading] = useState(false);
     const [isSideBarOpen, setSideBarOpen] = useState(false);
+
+    function handleSearchSubmit() {
+        
+    }
 
     function handleOpenSideBarMenu() {
         setSideBarOpen(true);
@@ -20,6 +27,15 @@ function Movies({ loggedIn }) {
     function handleCloseSideBarMenu() {
         setSideBarOpen(false);
     }
+
+    // MoviesApi
+    //   .getCards()
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
     return (
         <>
@@ -33,7 +49,9 @@ function Movies({ loggedIn }) {
                 <div className="movies__search-form-wrap">
 
                     <div className="movies__search-form">
-                        <SearchForm />
+                        <SearchForm
+                            onSubmit={handleSearchSubmit}
+                        />
                     </div>
 
                 </div>

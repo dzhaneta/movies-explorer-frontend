@@ -104,9 +104,7 @@ function Profile({
                             />
                         </label>
                         <span 
-                            className={`
-                                profile__input-error
-                            `}
+                            className="profile__input-error"
                         >
                             {errors.name}
                         </span>
