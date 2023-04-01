@@ -111,7 +111,7 @@ function Movies({ loggedIn }) {
     }
 
     function handleSearchSubmit(values) {
-        console.log(values);
+        console.log('пошел поиск');
         saveSearchInputsLocal(values);
         setSearchInputs(values);
         return getAllMovies()

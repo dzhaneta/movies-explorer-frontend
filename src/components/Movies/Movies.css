@@ -1,3 +1,7 @@
+.movies {
+    flex: 1;
+}
+
 .movies__search-form-wrap {
     padding: 0 70px;
 }
