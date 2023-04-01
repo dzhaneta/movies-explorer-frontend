@@ -39,7 +39,7 @@ function SearchForm({
 
                 <input
                     onChange={handleInputChange}
-                    value={searchInput || values.request || ''}
+                    value={searchInput.request || values.request || ''}
                     required
                     name="request"
                     type="text"

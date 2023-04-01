@@ -10,6 +10,10 @@
     padding: 70px 70px 0;
 }
 
+.movies__movies-list_empty {
+    min-height: 100%;
+}
+
 .movies__more {
     min-height: 166px;
     display: flex;

@@ -6,19 +6,20 @@ import SideBarMenu from '../SideBarMenu/SideBarMenu';
 import Preloader from '../Preloader/Preloader';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import { filterByRequest } from '../../utils/functions';
+import { filterByRequest, filterByDuration } from '../../utils/functions';
 
 function Movies({ loggedIn }) {
 
-    const [searchInput, setSearchInput] = useState([]);
-    const [isFiltered, setIsFiltered] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
+    const [result, setResult] = useState([]);
+    const [filter, setFilter] = useState(false);
     const [cardsList, setCardsList] = useState([]);
+    const [isCardsListEmpty, setIsCardsListEmpty] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isSideBarOpen, setSideBarOpen] = useState(false);
 
     // search form & cards setup
     useEffect(() => {
-        // search form setup
         let previousInputs = getSearchInputsLocal();
         if (previousInputs) {
             console.log('searched before');
@@ -26,12 +27,24 @@ function Movies({ loggedIn }) {
             console.log(previousInputs);
             setSearchInputs(previousInputs);
             // забрать карточки из локала и отрендерить если они есть
+            let previousCardList = getResultCardsLocal();
+            previousCardList
+                ? setCardsList(previousCardList)
+                : setIsCardsListEmpty(true);
+            
         } else {
             console.log('no search before');
-            // no search before then all cards setup
-            
+            // no search before
+            setIsCardsListEmpty(true);
         }
     }, []);  
+
+    // filter effect
+    useEffect(() => {
+        let cards = getResultCardsLocal();
+        let shownCards = filterByDuration(filter, cards);
+        setCardsList(shownCards);
+    }, [filter, result]);  
 
     // local save & read handlers
     function saveSearchInputsLocal(values) {
@@ -42,42 +55,70 @@ function Movies({ loggedIn }) {
         JSON.parse(localStorage.getItem('moviesSearchValues'));
     }
 
-    function saveCardListLocal(cards) {
-        localStorage.setItem('movies', JSON.stringify(cards));
+    function saveAllCardsLocal(cards) {
+        localStorage.setItem('movies-all', JSON.stringify(cards));
     }
 
-    function getCardListLocal() {
-        JSON.parse(localStorage.getItem('movies'));
+    function getAllCardsLocal() {
+        JSON.parse(localStorage.getItem('movies-all'));
     }
 
-    // MoviesApi requests
+    function saveResultCardsLocal(cards) {
+        localStorage.setItem('movies-result', JSON.stringify(cards));
+    }
+
+    function getResultCardsLocal() {
+        JSON.parse(localStorage.getItem('movies-result'));
+    }
+
+    // get all movies
     function getAllMovies() {
-        setIsLoading(true);
-        MoviesApi
-            .getCards()
-            .then((data) => {
-                console.log('all films get');
-                return data;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        if (!getAllCardsLocal()) {
+            return MoviesApi
+                .getCards()
+                .then((data) => {
+                    console.log('all films get from API');
+                    return data;
+                })
+                .then((data) => {
+                    saveAllCardsLocal(data);
+                    return data;
+                })
+                .catch((err) => {
+                    console.log('ответ апи не пришел');
+                    console.log(err);
+                });
+        }
+        
+        return Promise.resolve(getAllCardsLocal());
     }
 
     // search & filter handlers
     function setSearchInputs(input) {
         setSearchInput(input.request);
-        setIsFiltered(input.isChecked);
+        setFilter(input.isChecked);
     }
 
     function handleSearchSubmit(values) {
+        console.log(values);
         saveSearchInputsLocal(values);
         setSearchInputs(values);
-        getAllMovies();
-        // if none set gallery message
-        // filter
-        //save local
-        // render
+        return getAllMovies()
+            .then((data) => {
+                console.log(searchInput);
+                console.log(filter);
+                filterByRequest(searchInput, data);
+                return data;
+            })
+            .then((data) => {
+                console.log(data);
+                saveResultCardsLocal(data);
+                setResult(data);
+                return data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     // sidebar handlers
@@ -105,7 +146,7 @@ function Movies({ loggedIn }) {
                     <div className="movies__search-form">
                         <SearchForm
                             searchInput={searchInput}
-                            isFiltered={isFiltered}
+                            isFiltered={filter}
                             onSubmit={handleSearchSubmit}
                         />
                     </div>
@@ -115,18 +156,22 @@ function Movies({ loggedIn }) {
                 {isLoading
                 ? <Preloader />
                 : <>
-                    <div className="movies__movies-list">
-                    <MoviesCardList 
-                        cards={cardsList}
-                        type={'movies'}
-                        />
-                    </div>
+                    {isCardsListEmpty
+                        ? <div className="movies__movies-list_empty"></div>
+                        :   <>
+                                <div className="movies__movies-list">
+                                    <MoviesCardList 
+                                        cards={cardsList}
+                                        type={'movies'}
+                                        />
+                                    </div>
 
-                    <div className="movies__more">
-                        <button className="movies__more-button">Ещё</button>
-                    </div>
-                </>
-                
+                                    <div className="movies__more">
+                                        <button className="movies__more-button">Ещё</button>
+                                </div>
+                            </>
+                    }
+                    </>
                 }
 
             </main>
