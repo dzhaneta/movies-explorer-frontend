@@ -19,6 +19,8 @@ export function filterByRequest(request, data) {
     if (
         typeof request === 'string' &&
         typeof data === 'object' &&
+        data !== null &&
+        data !== undefined &&
         data.length > 0
     ) {
         const word = request.toLowerCase();
@@ -39,6 +41,8 @@ export function filterByDuration(filter, data) {
     if (
       typeof filter === 'boolean' &&
       typeof data === 'object' &&
+      data !== null &&
+      data !== undefined &&
       data.length > 0
     ) {
       const result = data.filter((movie) =>
