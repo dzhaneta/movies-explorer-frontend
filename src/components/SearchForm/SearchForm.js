@@ -6,11 +6,12 @@ import { useFormWithValidation } from '../../utils/useFormWithValidation';
 
 function SearchForm({
     searchInput,
-    isFiltered,
+    filter,
+    setFilter,
     onSubmit,
 }) {
     
-    const [isChecked, setIsChecked] = useState(isFiltered);
+    const [isChecked, setIsChecked] = useState(filter);
     const { values, errors, handleChange, isValid } = useFormWithValidation();
 
     function handleInputChange(e) {
@@ -19,6 +20,7 @@ function SearchForm({
 
     function handleCheckboxChange(e) {
         setIsChecked(!isChecked);
+        setFilter(isChecked);
     }
     
     function handleSubmit(e) {
@@ -39,7 +41,7 @@ function SearchForm({
 
                 <input
                     onChange={handleInputChange}
-                    value={searchInput || values.request || ''}
+                    value={values.request || searchInput || ''}
                     required
                     name="request"
                     type="text"

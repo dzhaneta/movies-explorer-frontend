@@ -13,6 +13,7 @@ function Movies({ loggedIn }) {
     const [searchInput, setSearchInput] = useState('');
     const [result, setResult] = useState([]);
     const [filter, setFilter] = useState(false);
+    const [isSearchFormInitialized, setIsSearchFormInitialized] = useState(false);
     const [cardsList, setCardsList] = useState([]);
     const [isCardsListEmpty, setIsCardsListEmpty] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -26,24 +27,32 @@ function Movies({ loggedIn }) {
             // searched before
             console.log(previousInputs);
             setSearchInputs(previousInputs);
-            
+            setIsSearchFormInitialized(true);
             // забрать карточки из локала и отрендерить если они есть
             let previousCardList = getResultCardsLocal();
-            previousCardList
-                ? setCardsList(previousCardList)
-                : setIsCardsListEmpty(true);
+            console.log(previousCardList);
+            if (previousCardList) {
+                setCardsList(previousCardList);
+                setIsCardsListEmpty(false);
+            } else {
+                setIsCardsListEmpty(true);
+            }
             
         } else {
             console.log('no search before');
             // no search before
+            setIsSearchFormInitialized(true);
             setIsCardsListEmpty(true);
         }
     }, []);  
 
     // filter effect
     useEffect(() => {
+        console.log('пошел эффект фильтра');
+        // записать фильтр локально !!!!
         let cards = getResultCardsLocal();
         let shownCards = filterByDuration(filter, cards);
+        console.log(shownCards);
         shownCards && setCardsList(shownCards);
     }, [filter, result]);  
 
@@ -96,14 +105,8 @@ function Movies({ loggedIn }) {
 
     // search & filter handlers
     function setSearchInputs(input) {
-        
-        console.log(input);
-        console.log(input.request);
         setSearchInput(input.request);
-        console.log(searchInput);
-        console.log(input.isChecked);
         setFilter(input.isChecked);
-        console.log(filter);
     }
 
     function handleSearchSubmit(values) {
@@ -145,17 +148,20 @@ function Movies({ loggedIn }) {
 
             <main className="movies">
 
-                <div className="movies__search-form-wrap">
+                {isSearchFormInitialized && 
+                    <div className="movies__search-form-wrap">
 
-                    <div className="movies__search-form">
-                        <SearchForm
-                            searchInput={searchInput}
-                            isFiltered={filter}
-                            onSubmit={handleSearchSubmit}
-                        />
+                        <div className="movies__search-form">
+                            <SearchForm
+                                searchInput={searchInput}
+                                filter={filter}
+                                setFilter={setFilter}
+                                onSubmit={handleSearchSubmit}
+                            />
+                        </div>
+
                     </div>
-
-                </div>
+                }
 
                 {isLoading
                 ? <Preloader />
