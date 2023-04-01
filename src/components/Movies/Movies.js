@@ -19,6 +19,12 @@ function Movies({ loggedIn }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isSideBarOpen, setSideBarOpen] = useState(false);
 
+    // info message state
+    const [infoMessage, setinfoMessage] = useState({
+        message: '',
+        type: '',
+    });
+
     // search form & cards setup
     useEffect(() => {
         let previousInputs = getSearchInputsLocal();
@@ -28,16 +34,6 @@ function Movies({ loggedIn }) {
             console.log(previousInputs);
             setSearchInputs(previousInputs);
             setIsSearchFormInitialized(true);
-            // забрать карточки из локала и отрендерить если они есть
-            let previousCardList = getResultCardsLocal();
-            console.log(previousCardList);
-            if (previousCardList) {
-                setCardsList(previousCardList);
-                setIsCardsListEmpty(false);
-            } else {
-                setIsCardsListEmpty(true);
-            }
-            
         } else {
             console.log('no search before');
             // no search before
@@ -53,7 +49,12 @@ function Movies({ loggedIn }) {
         let cards = getResultCardsLocal();
         let shownCards = filterByDuration(filter, cards);
         console.log(shownCards);
-        shownCards && setCardsList(shownCards);
+        if (shownCards) {
+            setCardsList(shownCards);
+            setIsCardsListEmpty(false);
+        } else {
+            setIsCardsListEmpty(true);
+        }
     }, [filter, result]);  
 
     // local save & read handlers
