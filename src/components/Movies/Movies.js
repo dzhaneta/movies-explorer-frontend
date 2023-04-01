@@ -26,6 +26,7 @@ function Movies({ loggedIn }) {
             // searched before
             console.log(previousInputs);
             setSearchInputs(previousInputs);
+            
             // забрать карточки из локала и отрендерить если они есть
             let previousCardList = getResultCardsLocal();
             previousCardList
@@ -43,7 +44,7 @@ function Movies({ loggedIn }) {
     useEffect(() => {
         let cards = getResultCardsLocal();
         let shownCards = filterByDuration(filter, cards);
-        setCardsList(shownCards);
+        shownCards && setCardsList(shownCards);
     }, [filter, result]);  
 
     // local save & read handlers
@@ -52,7 +53,7 @@ function Movies({ loggedIn }) {
     }
 
     function getSearchInputsLocal() {
-        JSON.parse(localStorage.getItem('moviesSearchValues'));
+        return JSON.parse(localStorage.getItem('moviesSearchValues'));
     }
 
     function saveAllCardsLocal(cards) {
@@ -60,7 +61,7 @@ function Movies({ loggedIn }) {
     }
 
     function getAllCardsLocal() {
-        JSON.parse(localStorage.getItem('movies-all'));
+        return JSON.parse(localStorage.getItem('movies-all'));
     }
 
     function saveResultCardsLocal(cards) {
@@ -68,7 +69,7 @@ function Movies({ loggedIn }) {
     }
 
     function getResultCardsLocal() {
-        JSON.parse(localStorage.getItem('movies-result'));
+        return JSON.parse(localStorage.getItem('movies-result'));
     }
 
     // get all movies
@@ -95,8 +96,14 @@ function Movies({ loggedIn }) {
 
     // search & filter handlers
     function setSearchInputs(input) {
+        
+        console.log(input);
+        console.log(input.request);
         setSearchInput(input.request);
+        console.log(searchInput);
+        console.log(input.isChecked);
         setFilter(input.isChecked);
+        console.log(filter);
     }
 
     function handleSearchSubmit(values) {
@@ -105,16 +112,13 @@ function Movies({ loggedIn }) {
         setSearchInputs(values);
         return getAllMovies()
             .then((data) => {
-                console.log(searchInput);
-                console.log(filter);
-                filterByRequest(searchInput, data);
-                return data;
+                return filterByRequest(searchInput, data);
             })
-            .then((data) => {
-                console.log(data);
-                saveResultCardsLocal(data);
-                setResult(data);
-                return data;
+            .then((res) => {
+                console.log(res);
+                saveResultCardsLocal(res);
+                setResult(res);
+                return res;
             })
             .catch((err) => {
                 console.log(err);
