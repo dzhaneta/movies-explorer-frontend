@@ -95,7 +95,7 @@ class Api {
     // Get cards from API
   
     getCards() {
-        return fetch(`${this._baseUrl}/cards`, {
+        return fetch(`${this._baseUrl}/movies`, {
           method: 'GET',
           headers: this._headers,
           credentials: 'include',
@@ -105,14 +105,23 @@ class Api {
     
     // Save card
   
-    saveCard(name, link) {
-      return fetch(`${this._baseUrl}/cards`, {
+    saveCard(movie) {
+      return fetch(`${this._baseUrl}/movies`, {
         method: 'POST',
         headers: this._headers,
         credentials: 'include',
         body: JSON.stringify({
-          name: name,
-          link: link
+          country: movie.country,
+          director: movie.director,
+          duration: movie.duration,
+          year: movie.year,
+          description: movie.description,
+          image: movie.image,
+          trailerLink: movie.trailerLink,
+          thumbnail: movie.thumbnail,
+          movieId: movie.movieId,
+          nameRU: movie.nameRU,
+          nameEN: movie.nameEN,
         })
       })
       .then(this._checkResponse)
@@ -122,26 +131,14 @@ class Api {
     // Delete card
   
     deleteCard(id) {
-      return fetch(`${this._baseUrl}/cards/${id}`, {
+      return fetch(`${this._baseUrl}/movies/${id}`, {
         method: 'DELETE',
         headers: this._headers,
         credentials: 'include',
       })
       .then(this._checkResponse)
     }
-  
-    // card like-dislike
-    
-    changeLikeCardStatus(id, status) {
-      let method = status? 'PUT' : 'DELETE'
-      return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: method,
-        headers: this._headers,
-        credentials: 'include',
-      })
-      .then(this._checkResponse);
-    }
-  }
+}
   
   // API
   const MainApi = new Api({

@@ -33,9 +33,7 @@ function Main({ loggedIn }) {
                 <div className="content">
 
                     <AboutProject />
-
                     <Techs />
-
                     <Student />
 
                 </div>

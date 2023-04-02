@@ -1,17 +1,15 @@
-import { useState } from 'react';
 import iconLoupePath from '../../images/icon_loupe.svg'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 
 
 function SearchForm({
-    searchInput,
-    filter,
-    setFilter,
+    initialState = {},
+    isChecked,
+    onCheckboxChange,
     onSubmit,
 }) {
-    
-    const [isChecked, setIsChecked] = useState(filter);
+
     const { values, errors, handleChange, isValid } = useFormWithValidation();
 
     function handleInputChange(e) {
@@ -19,19 +17,16 @@ function SearchForm({
     }
 
     function handleCheckboxChange(e) {
-        setIsChecked(!isChecked);
-        setFilter(isChecked);
+        onCheckboxChange(!isChecked);
     }
-    
+
     function handleSubmit(e) {
-        
         e.preventDefault();
-        let request = values.request;
-        onSubmit({request, isChecked})
+        onSubmit({ text: values.text, isChecked });
     }
 
     return (
-        <form 
+        <form
             onSubmit={handleSubmit}
             noValidate
             className="search-form"
@@ -41,19 +36,19 @@ function SearchForm({
 
                 <input
                     onChange={handleInputChange}
-                    value={values.request || searchInput || ''}
+                    value={values.text || initialState.text || ''}
                     required
-                    name="request"
+                    name="text"
                     type="text"
                     placeholder="Фильм"
                     className="search-form__input"
                 />
-                
+
                 <span className="profile__input-error">
-                    {errors.request && 'Нужно ввести ключевое слово'}
+                    {errors.text && 'Нужно ввести ключевое слово'}
                 </span>
 
-                <button 
+                <button
                     type='submit'
                     className="search-form__button"
                     disabled={!isValid}
@@ -64,14 +59,14 @@ function SearchForm({
             </fieldset>
 
             <fieldset className="search-form__filter">
-                <FilterCheckbox 
+                <FilterCheckbox
                     checked={isChecked}
                     onChange={handleCheckboxChange}
                 />
             </fieldset>
 
         </form>
-    ); 
+    );
 }
 
 export default SearchForm;

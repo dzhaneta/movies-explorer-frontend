@@ -9,15 +9,12 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { filterByRequest, filterByDuration } from '../../utils/functions';
 
 function Movies({ loggedIn }) {
-
-    const [searchInput, setSearchInput] = useState('');
-    const [result, setResult] = useState([]);
-    const [filter, setFilter] = useState(false);
     const [isSearchFormInitialized, setIsSearchFormInitialized] = useState(false);
+    const [searchFormInitialState, setSearchFormInitialState] = useState();
     const [cardsList, setCardsList] = useState([]);
-    const [isCardsListEmpty, setIsCardsListEmpty] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isSideBarOpen, setSideBarOpen] = useState(false);
+
 
     // info message state
     const [infoMessage, setinfoMessage] = useState({
@@ -27,39 +24,31 @@ function Movies({ loggedIn }) {
 
     // search form & cards setup
     useEffect(() => {
-        let previousInputs = getSearchInputsLocal();
-        if (previousInputs) {
-            console.log('searched before');
-            // searched before
-            console.log(previousInputs);
-            setSearchInputs(previousInputs);
-            setIsSearchFormInitialized(true);
-        } else {
-            console.log('no search before');
-            // no search before
-            setIsSearchFormInitialized(true);
-            setIsCardsListEmpty(true);
-        }
-    }, []);  
+        const previousInputs = getSearchInputsLocal();
 
-    // filter effect
-    useEffect(() => {
-        console.log('пошел эффект фильтра');
-        // записать фильтр локально !!!!
-        let cards = getResultCardsLocal();
-        let shownCards = filterByDuration(filter, cards);
-        console.log(shownCards);
-        if (shownCards) {
-            setCardsList(shownCards);
-            setIsCardsListEmpty(false);
+        if (previousInputs) {
+            // searched before
+            console.log('searched before');
+            console.log(previousInputs);
+            setSearchFormInitialState(previousInputs);
+            const previousCardsResult = getResultCardsLocal() || [];
+            setCardsList(previousCardsResult);
         } else {
-            setIsCardsListEmpty(true);
+            // no search before
+            console.log('no search before');
         }
-    }, [filter, result]);  
+        setIsSearchFormInitialized(true);
+    }, []);
 
     // local save & read handlers
     function saveSearchInputsLocal(values) {
         localStorage.setItem('moviesSearchValues', JSON.stringify(values));
+    }
+
+    function patchFilterSearchInputsLocal(filter) {
+        const prev = getSearchInputsLocal();
+        prev.isChecked = filter;
+        saveSearchInputsLocal(prev);
     }
 
     function getSearchInputsLocal() {
@@ -84,7 +73,9 @@ function Movies({ loggedIn }) {
 
     // get all movies
     function getAllMovies() {
-        if (!getAllCardsLocal()) {
+        const localCards = getAllCardsLocal();
+
+        if (!localCards) {
             return MoviesApi
                 .getCards()
                 .then((data) => {
@@ -100,34 +91,43 @@ function Movies({ loggedIn }) {
                     console.log(err);
                 });
         }
-        
-        return Promise.resolve(getAllCardsLocal());
+
+        return Promise.resolve(localCards);
     }
 
     // search & filter handlers
-    function setSearchInputs(input) {
-        setSearchInput(input.request);
-        setFilter(input.isChecked);
-    }
 
-    function handleSearchSubmit(values) {
+    function searchMovies(values) {
         console.log('пошел поиск');
+        console.log(values);
         saveSearchInputsLocal(values);
-        setSearchInputs(values);
+
         return getAllMovies()
             .then((data) => {
-                return filterByRequest(searchInput, data);
+                return saveResultCardsLocal(
+                    filterByRequest(values.request, data)
+                );
             })
-            .then((res) => {
-                console.log(res);
-                saveResultCardsLocal(res);
-                setResult(res);
-                return res;
+            .then((data) => {
+                return filterByDuration(values.isChecked,data);
+            })
+            .then((cards) => {
+                console.log(cards);
+                saveResultCardsLocal(cards);
+                setCardsList(cards);
+
+                return cards;
             })
             .catch((err) => {
                 console.log(err);
             });
     }
+
+    function filterMovies(filter) {
+        console.log('пошла фильтрация');
+        
+    }
+
 
     // sidebar handlers
     function handleOpenSideBarMenu() {
@@ -138,8 +138,6 @@ function Movies({ loggedIn }) {
         setSideBarOpen(false);
     }
 
-    
-
     return (
         <>
             <Header
@@ -149,15 +147,14 @@ function Movies({ loggedIn }) {
 
             <main className="movies">
 
-                {isSearchFormInitialized && 
+                {isSearchFormInitialized &&
                     <div className="movies__search-form-wrap">
 
                         <div className="movies__search-form">
                             <SearchForm
-                                searchInput={searchInput}
-                                filter={filter}
-                                setFilter={setFilter}
-                                onSubmit={handleSearchSubmit}
+                                initialState={searchFormInitialState}
+                                onFilter={filterMovies}
+                                onSubmit={searchMovies}
                             />
                         </div>
 
@@ -167,11 +164,11 @@ function Movies({ loggedIn }) {
                 {isLoading
                 ? <Preloader />
                 : <>
-                    {isCardsListEmpty
+                    {cardsList.length === 0
                         ? <div className="movies__movies-list_empty"></div>
                         :   <>
                                 <div className="movies__movies-list">
-                                    <MoviesCardList 
+                                    <MoviesCardList
                                         cards={cardsList}
                                         type={'movies'}
                                         />
