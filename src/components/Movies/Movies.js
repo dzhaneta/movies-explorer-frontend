@@ -67,8 +67,7 @@ function Movies({ loggedIn }) {
             setSearchFormInitialState(previousInputs);
             setIsShortMoviesCheckboxActive(previousInputs.isChecked)
 
-            const previousCardsResult = getResultCardsLocal() || [];
-            setCardsList(previousCardsResult);
+            filterAllMoviesAndSetResult(previousInputs);
         } else {
             // no search before
             console.log('no search before');
@@ -148,14 +147,14 @@ function Movies({ loggedIn }) {
                 }
             })
             .catch((err) => {
-            console.log(err);
+                console.log(err);
             });
             
         return Promise.resolve(allCards);
     }
 
     // filter movies with likes
-    function filterMoviesAndSetResult(values) {
+    function filterAllMoviesAndSetResult(values) {
 
         getAllMoviesWithLikes()
             .then((data) => {
@@ -195,7 +194,7 @@ function Movies({ loggedIn }) {
         console.log('пошел поиск');
         console.log(values);
         saveSearchInputsLocal(values);
-        filterMoviesAndSetResult(values);
+        filterAllMoviesAndSetResult(values);
     }
 
     // card like-dislike handler

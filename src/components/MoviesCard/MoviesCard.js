@@ -48,7 +48,9 @@ function MoviesCard({ movie, type, onCardLike, onCardDelete }) {
                         <img 
                             src={isLiked? likedIcon : unlikedIcon} 
                             alt="like-icon" 
-                            className="movies-card__like-icon"
+                            className={isLiked 
+                                ? "movies-card__like-icon icon_liked"
+                                : "movies-card__like-icon"} 
                         />
                     </button>
                 }
