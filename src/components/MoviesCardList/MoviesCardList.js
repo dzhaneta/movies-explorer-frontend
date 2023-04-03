@@ -1,6 +1,6 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ cards, type }) {
+function MoviesCardList({ cards, type, onCardLike, onCardDelete }) {
 
     return (
         <div className="movies-card-list">
@@ -10,6 +10,8 @@ function MoviesCardList({ cards, type }) {
                         key={item.id}
                         movie={item}
                         type={type}
+                        onCardLike={onCardLike}
+                        onCardDelete={onCardDelete}
                     />
                 </div>
             ))}

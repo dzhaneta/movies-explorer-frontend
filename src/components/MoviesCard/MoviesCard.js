@@ -4,18 +4,17 @@ import likedIcon from '../../images/icon_liked.svg';
 import deleteIcon from '../../images/icon_delete.svg';
 import { getMovieDuration } from '../../utils/functions';
 
-function MoviesCard({ movie, type }) {
+function MoviesCard({ movie, type, onCardLike, onCardDelete }) {
 
-    const { nameRU, image, duration, trailerLink } = movie;
-    const [isLiked, setLiked] = useState(false);
+    const { nameRU, image, duration, trailerLink, isLiked } = movie;
     const baseURL = 'https://api.nomoreparties.co';
 
-    function handleLikeCard() {
-        setLiked(!isLiked);
+    function handleLikeClick() {
+        onCardLike(movie);
     }
 
     function handleDeleteCard() {
-        setLiked(!isLiked);
+        onCardDelete(movie);
     }
 
     return (
@@ -46,7 +45,7 @@ function MoviesCard({ movie, type }) {
                             movies-card__button 
                             movies-card__button_type_like
                         "
-                        onClick={handleLikeCard}
+                        onClick={handleLikeClick}
                     >
                         <img 
                             src={isLiked? likedIcon : unlikedIcon} 

@@ -29,6 +29,13 @@
     text-align: center;
     font-size: 13px;
     line-height: 18px;
+}
+
+.movies__message_type_info {
+    color: #A0A0A0;
+}
+
+.movies__message_type_error {
     color: #FF004C;
 }
 

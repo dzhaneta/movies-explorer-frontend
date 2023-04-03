@@ -1,7 +1,6 @@
-const ApiErrorsMessages = {
-    notfound: 'При регистрации пользователя произошла ошибка.',
-  };
-
-export default ApiErrorsMessages;
+export const messages = {
+  moviesNoResult: 'Ничего не найдено',
+  moviesApiError: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз',
+};
 
 

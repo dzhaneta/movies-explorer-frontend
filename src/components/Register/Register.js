@@ -22,7 +22,7 @@ function Register({ onRegister, infoMessage, setinfoMessage }) {
       label: 'E-mail',
       name: 'email',
       type: 'email',
-      pattern: '/^\S+@\S+\.\S+$/',
+      pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
       placeholder: 'ivanov@mail.ru',
       errorMessage: '',
     },

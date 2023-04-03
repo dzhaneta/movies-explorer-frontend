@@ -16,7 +16,7 @@ function App() {
   const history = useHistory();
 
   // user states
-  const [isAuthed, setIsAuthed] = useState(false);
+  const [isAuthCheckFinished, setIsAuthCheckFinished] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
 
@@ -28,26 +28,28 @@ function App() {
 
   // already logged-in checkup
   useEffect(() => {
-    console.log('работает проверка токена');
     MainApi
       .checkToken()
       .then((res) => {
         if (res) {
-          setIsAuthed(true);
           setLoggedIn(true);
         }
       })
       .catch((err) => {
-        console.log(err);
+        setinfoMessage({
+          message: err.message,
+          type: 'error',
+        });
+      })
+      .finally(() => {
+        setIsAuthCheckFinished(true);
       });
   }, []);  
 
   // set user info if logged-in
 
   useEffect(() => {
-    console.log('работает установка текущего юзера');
     if (!loggedIn) {
-      console.log('юзер не установлен');
       return;
     }
 
@@ -57,14 +59,17 @@ function App() {
         if (res) {
           setCurrentUser(res);
         }
-        console.log('юзер установлен');
       })
       .catch((err) => {
-        console.log(err);
+        setinfoMessage({
+          message: err.message,
+          type: 'error',
+        });
       });
   }, [loggedIn]);
 
-  if (!isAuthed) {
+  // do not render until authorization checkup is finished
+  if (!isAuthCheckFinished) {
     return null;
   }
 

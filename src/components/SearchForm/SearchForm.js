@@ -2,6 +2,7 @@ import iconLoupePath from '../../images/icon_loupe.svg'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 
+const inputName = 'text';
 
 function SearchForm({
     initialState = {},
@@ -9,8 +10,9 @@ function SearchForm({
     onCheckboxChange,
     onSubmit,
 }) {
-
-    const { values, errors, handleChange, isValid } = useFormWithValidation();
+    const { values, errors, handleChange, isValid } = useFormWithValidation(
+        { [inputName]: initialState.text }
+    );
 
     function handleInputChange(e) {
         handleChange(e);
@@ -36,9 +38,9 @@ function SearchForm({
 
                 <input
                     onChange={handleInputChange}
-                    value={values.text || initialState.text || ''}
+                    value={values.text || ''}
                     required
-                    name="text"
+                    name={inputName}
                     type="text"
                     placeholder="Фильм"
                     className="search-form__input"
