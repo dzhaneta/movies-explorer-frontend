@@ -9,7 +9,10 @@
     }
 
     export function getSearchInputsLocal() {
-        return JSON.parse(localStorage.getItem('moviesSearchValues'));
+        return JSON.parse(localStorage.getItem('moviesSearchValues')) || {
+            text: '',
+            isChecked: false,
+        };
     }
 
     export function saveAllCardsLocal(cards) {

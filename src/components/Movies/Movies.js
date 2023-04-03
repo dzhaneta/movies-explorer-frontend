@@ -37,7 +37,25 @@ function Movies({ loggedIn }) {
         type: '',
     });
 
-    // render search form & setup
+    // initial search form & cards setup
+    useEffect(() => {
+        const previousInputs = getSearchInputsLocal();
+
+        if (previousInputs) {
+            // searched before
+            console.log('searched before');
+            console.log(previousInputs);
+            setSearchFormInitialState(previousInputs);
+            setIsShortMoviesCheckboxActive(previousInputs.isChecked)
+            filterAllMoviesAndSetResult(previousInputs);
+        } else {
+            // no search before
+            console.log('no search before');
+        }
+        setIsSearchFormInitialized(true);
+    }, []);
+
+    // filter by duration
     useEffect(() => {
         if (isSearchFormInitialized) {
             setCardsList(
@@ -54,25 +72,6 @@ function Movies({ loggedIn }) {
     useEffect(() => {
         filterAllMoviesAndSetResult(getSearchInputsLocal());
     }, [savedCardsList]);
-
-    // initial search form & cards setup
-    useEffect(() => {
-        const previousInputs = getSearchInputsLocal();
-
-        if (previousInputs) {
-            // searched before
-            console.log('searched before');
-            console.log(previousInputs);
-            setSearchFormInitialState(previousInputs);
-            setIsShortMoviesCheckboxActive(previousInputs.isChecked)
-
-            filterAllMoviesAndSetResult(previousInputs);
-        } else {
-            // no search before
-            console.log('no search before');
-        }
-        setIsSearchFormInitialized(true);
-    }, []);
 
 
     // get all movies
@@ -126,57 +125,69 @@ function Movies({ loggedIn }) {
     // actualize all cards likes
     function getAllMoviesWithLikes() {
         console.log('добавляем всем карточкам лайки');
-        const allCards = getAllMovies();
-        const savedCards = getSavedMovies();
 
-        Promise.all([ allCards, savedCards])
-            .then((data) => {
-                if (data[1].length === 0) {
-                    console.log('лайков нет');
-                    return data[0];
-                } else {
+        return Promise.all([ getAllMovies(), getSavedMovies()])
+            .then(([ allCards, savedCards]) => {
+                console.log(allCards);
+                console.log(savedCards);
+                console.log('добавляем лайки');
+
+                if (savedCards.length !== 0) {
                     console.log('лайки есть');
-                    console.log(data[1]);
-                    const allCardsWithLikes = data[0].map(
-                        (card) => data[1].some((item) => item.movieId === card.movieId)
-                        ? card.isLiked
-                        : card
-                    );
-                    saveAllCardsLocal(allCardsWithLikes);
-                    return allCardsWithLikes;
-                }
+                    allCards.forEach(card => {
+                        card.isLiked = savedCards.some(
+                            saved => saved.movieId === card.movieId
+                        );
+                    });
+                } 
+
+                saveAllCardsLocal(allCards);
+                return allCards;
             })
             .catch((err) => {
                 console.log(err);
             });
-            
-        return Promise.resolve(allCards);
     }
 
     // filter movies with likes
     function filterAllMoviesAndSetResult(values) {
-
         getAllMoviesWithLikes()
             .then((data) => {
-                const filteredByText = filterByText(values.text, data) || [];
+                console.log(data);
+                console.log('фильтруем по всему');
+                console.log(values.text);
 
+                let filteredByText = [];
+
+                if (values.text !== '') {
+                    console.log('фильтруем по слову');
+                    filteredByText = filterByText(values.text, data) || [];
+
+                    console.log(filteredByText);
+                    saveResultCardsLocal(filteredByText);
+                    return filteredByText;
+                }
+                
+                console.log('фильтруем по чекбоксу');
                 console.log(filteredByText);
-                saveResultCardsLocal(filteredByText);
 
                 const filteredByDuration = filterByDuration(
                     isShortMoviesCheckboxActive,
                     filteredByText
                 ) || [];
-
+                
+                console.log(filteredByDuration);
                 setCardsList(filteredByDuration);
 
-                cardsList.length === 0
-                && setinfoMessage({
-                    message: messages.moviesNoResult,
-                    type: 'info',
-                });
+                if (filteredByDuration.length === 0) {
+                    setinfoMessage({
+                        message: messages.moviesNoResult,
+                        type: 'info',
+                    });
+                }
             })
-            .catch(() => {
+            .catch((e) => {
+                console.error(e);
                 setinfoMessage({
                     message: messages.moviesApiError,
                     type: 'error',
@@ -215,7 +226,7 @@ function Movies({ loggedIn }) {
             MainApi
                 .saveCard(card)
                 .then((newCard) => {
-                    setSavedCardsList([...savedCardsList, newCard.isLiked]);
+                    setSavedCardsList([...savedCardsList, {newCard: { isLiked: true }}]);
                     addSavedCardsLocal(newCard.isLiked);
                 })
                 .catch((err) => {
@@ -262,7 +273,7 @@ function Movies({ loggedIn }) {
                 : <>
                     {cardsList.length === 0
                         ?   <div className="movies__movies-list_empty">
-                                <span 
+                                <span
                                     className={`
                                         movies__message
                                         movies__message_type_${infoMessage.type}
