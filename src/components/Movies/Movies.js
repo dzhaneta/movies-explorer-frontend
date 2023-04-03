@@ -52,9 +52,8 @@ function Movies({ loggedIn }) {
 
     // refresh render cards likes
     useEffect(() => {
-        
-        
-    }, [ savedCardsList]);
+        filterAllMoviesAndSetResult(getSearchInputsLocal());
+    }, [savedCardsList]);
 
     // initial search form & cards setup
     useEffect(() => {
@@ -124,7 +123,7 @@ function Movies({ loggedIn }) {
         return Promise.resolve(savedCards);
     }
 
-    // all cards likes setup
+    // actualize all cards likes
     function getAllMoviesWithLikes() {
         console.log('добавляем всем карточкам лайки');
         const allCards = getAllMovies();
@@ -137,8 +136,9 @@ function Movies({ loggedIn }) {
                     return data[0];
                 } else {
                     console.log('лайки есть');
+                    console.log(data[1]);
                     const allCardsWithLikes = data[0].map(
-                        (card) => data[1].some(card.movieID)
+                        (card) => data[1].some((item) => item.movieId === card.movieId)
                         ? card.isLiked
                         : card
                     );
