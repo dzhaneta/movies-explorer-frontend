@@ -21,6 +21,16 @@ class Api {
           headers: this._headers,
         })
         .then(this._checkResponse)
+        .then((res) => {
+          let cards = res.map(card => {
+            return {...card, 
+              image: (`${this._baseUrl}${card.image.url}`),
+              thumbnail: (`${this._baseUrl}${card.image.formats.thumbnail.url}`),
+              movieId: card.id
+            };
+          });
+          return cards;
+        })
     }
     
   }

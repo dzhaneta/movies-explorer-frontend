@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import unlikedIcon from '../../images/icon_unliked.svg';
 import likedIcon from '../../images/icon_liked.svg';
 import deleteIcon from '../../images/icon_delete.svg';
@@ -7,7 +6,6 @@ import { getMovieDuration } from '../../utils/functions';
 function MoviesCard({ movie, type, onCardLike, onCardDelete }) {
 
     const { nameRU, image, duration, trailerLink, isLiked } = movie;
-    const baseURL = 'https://api.nomoreparties.co';
 
     function handleLikeClick() {
         onCardLike(movie);
@@ -28,7 +26,7 @@ function MoviesCard({ movie, type, onCardLike, onCardDelete }) {
             >
                 <img
                     className="movies-card__image"
-                    src={`${baseURL}${image.url}`}
+                    src={image}
                     alt={image.name}
                 />
             </a>

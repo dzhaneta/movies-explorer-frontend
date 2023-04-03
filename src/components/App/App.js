@@ -110,6 +110,7 @@ function App() {
       .then(() => {
         setLoggedIn(false);
         setCurrentUser({});
+        localStorage.clear();
         history.push("/");
       })
       .catch((err) => {

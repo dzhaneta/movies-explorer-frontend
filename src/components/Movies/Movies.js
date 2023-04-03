@@ -50,6 +50,12 @@ function Movies({ loggedIn }) {
         }
     }, [isShortMoviesCheckboxActive, isSearchFormInitialized]);
 
+    // refresh render cards likes
+    useEffect(() => {
+        
+        
+    }, [ savedCardsList]);
+
     // initial search form & cards setup
     useEffect(() => {
         const previousInputs = getSearchInputsLocal();
@@ -148,13 +154,8 @@ function Movies({ loggedIn }) {
         return Promise.resolve(allCards);
     }
 
-    // search & filter handlers
-
-    function searchMovies(values) {
-        setIsLoading(true);
-        console.log('пошел поиск');
-        console.log(values);
-        saveSearchInputsLocal(values);
+    // filter movies with likes
+    function filterMoviesAndSetResult(values) {
 
         getAllMoviesWithLikes()
             .then((data) => {
@@ -187,13 +188,24 @@ function Movies({ loggedIn }) {
             });
     }
 
+    // search & filter handlers
+
+    function searchMovies(values) {
+        setIsLoading(true);
+        console.log('пошел поиск');
+        console.log(values);
+        saveSearchInputsLocal(values);
+        filterMoviesAndSetResult(values);
+    }
+
     // card like-dislike handler
     function handleCardLike(card) {
         if (card.isLiked) {
             MainApi
-                .deleteCard(card.id)
+                .deleteCard(card.movieId)
                 .then(() => {
-                    let newSavedCardList = savedCardsList.filter((item) => item.id !== card.id);
+                    let newSavedCardList = savedCardsList
+                        .filter((item) => item.movieId !== card.movieId);
                     setSavedCardsList(newSavedCardList);
                     deleteFromSavedCardsLocal(card);
                 })
@@ -204,8 +216,8 @@ function Movies({ loggedIn }) {
             MainApi
                 .saveCard(card)
                 .then((newCard) => {
-                    setSavedCardsList([...savedCardsList, newCard])
-                    addSavedCardsLocal(newCard)
+                    setSavedCardsList([...savedCardsList, newCard.isLiked]);
+                    addSavedCardsLocal(newCard.isLiked);
                 })
                 .catch((err) => {
                     console.log(err);
