@@ -39,6 +39,7 @@ function Movies({ loggedIn }) {
 
     // initial search form & cards setup
     useEffect(() => {
+        console.log('работает маунт эффект');
         const previousInputs = getSearchInputsLocal();
 
         if (previousInputs) {
@@ -57,6 +58,7 @@ function Movies({ loggedIn }) {
 
     // filter by duration
     useEffect(() => {
+        console.log('работает установка формы эффект');
         if (isSearchFormInitialized) {
             setCardsList(
                 filterByDuration(
