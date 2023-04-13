@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
+import { regexes } from '../../utils/constants';
 
 function Login({ onLogin, infoMessage, setinfoMessage }) {
 
@@ -12,7 +13,7 @@ function Login({ onLogin, infoMessage, setinfoMessage }) {
       label: 'E-mail',
       name: 'email',
       type: 'email',
-      pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
+      pattern: regexes.email,
       placeholder: 'ivanov@mail.ru',
       errorMessage: '',
     },

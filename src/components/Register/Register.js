@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
+import { regexes } from '../../utils/constants';
 
 function Register({ onRegister, infoMessage, setinfoMessage }) {  
 
@@ -12,7 +13,7 @@ function Register({ onRegister, infoMessage, setinfoMessage }) {
       label: 'Имя',
       name: 'name',
       type: 'text',
-      pattern: '[- А-Яа-яA-Za-zё]+$',
+      pattern: regexes.name,
       minLength: '2',
       maxLength: '30',
       placeholder: 'Ivan Ivanov',
@@ -22,7 +23,7 @@ function Register({ onRegister, infoMessage, setinfoMessage }) {
       label: 'E-mail',
       name: 'email',
       type: 'email',
-      pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
+      pattern: regexes.email,
       placeholder: 'ivanov@mail.ru',
       errorMessage: '',
     },

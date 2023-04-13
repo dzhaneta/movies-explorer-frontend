@@ -26,7 +26,6 @@ class Api {
             return {...card, 
               image: (`${this._baseUrl}${card.image.url}`),
               thumbnail: (`${this._baseUrl}${card.image.formats.thumbnail.url}`),
-              movieId: card.id
             };
           });
           return cards;

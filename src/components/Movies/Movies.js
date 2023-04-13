@@ -48,7 +48,9 @@ function Movies({ loggedIn }) {
             console.log(previousInputs);
             setSearchFormInitialState(previousInputs);
             setIsShortMoviesCheckboxActive(previousInputs.isChecked)
-            filterAllMoviesAndSetResult(previousInputs);
+            if (getAllCardsLocal()) {
+                filterAllMoviesAndSetResult(previousInputs);
+            } 
         } else {
             // no search before
             console.log('no search before');
@@ -72,6 +74,7 @@ function Movies({ loggedIn }) {
 
     // refresh render cards likes
     useEffect(() => {
+        console.log('добавилась новая сохраненка, обновляем');
         filterAllMoviesAndSetResult(getSearchInputsLocal());
     }, [savedCardsList]);
 
@@ -167,7 +170,6 @@ function Movies({ loggedIn }) {
 
                     console.log(filteredByText);
                     saveResultCardsLocal(filteredByText);
-                    return filteredByText;
                 }
                 
                 console.log('фильтруем по чекбоксу');
@@ -178,6 +180,7 @@ function Movies({ loggedIn }) {
                     filteredByText
                 ) || [];
                 
+                console.log('итог фильтрации');
                 console.log(filteredByDuration);
                 setCardsList(filteredByDuration);
 
@@ -212,10 +215,15 @@ function Movies({ loggedIn }) {
 
     // card like-dislike handler
     function handleCardLike(card) {
+        
         if (card.isLiked) {
+            console.log('убираем лайк');
             MainApi
-                .deleteCard(card.movieId)
+                .deleteCard(card._id)
                 .then(() => {
+                    console.log('текущие сохраненки');
+                    console.log(savedCardsList);
+
                     let newSavedCardList = savedCardsList
                         .filter((item) => item.movieId !== card.movieId);
                     setSavedCardsList(newSavedCardList);
@@ -225,11 +233,14 @@ function Movies({ loggedIn }) {
                     console.log(err);
                 });
         } else {
+            console.log('ставим лайк');
             MainApi
                 .saveCard(card)
                 .then((newCard) => {
-                    setSavedCardsList([...savedCardsList, {newCard: { isLiked: true }}]);
-                    addSavedCardsLocal(newCard.isLiked);
+                    newCard.isLiked = true;
+                    addSavedCardsLocal(newCard);
+                    setSavedCardsList(savedCardsList.push(newCard));
+                    console.log(getSavedCardsLocal());
                 })
                 .catch((err) => {
                     console.log(err);
