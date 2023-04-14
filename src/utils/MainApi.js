@@ -125,6 +125,11 @@ class Api {
         })
       })
       .then(this._checkResponse)
+      .then((card) => {
+          return {...card, 
+            id: card._id,
+          };
+      })
     }
   
   

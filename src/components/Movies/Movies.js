@@ -218,15 +218,17 @@ function Movies({ loggedIn }) {
         
         if (card.isLiked) {
             console.log('убираем лайк');
-            console.log(card._id);
+            console.log(card);
+            const savedCardId = getSavedCardsLocal().find(x => x.movieId === card.id)._id;
+            debugger;
             MainApi
-                .deleteCard(card._id)
+                .deleteCard(savedCardId)
                 .then(() => {
                     console.log('текущие сохраненки');
                     console.log(savedCardsList);
 
-                    let newSavedCardList = savedCardsList
-                        .filter((item) => item.movieId !== card.movieId);
+                    let newSavedCardList = getSavedCardsLocal()
+                        .filter((item) => item.movieId !== card.id);
                     setSavedCardsList(newSavedCardList);
                     deleteFromSavedCardsLocal(card);
                 })
@@ -243,9 +245,8 @@ function Movies({ loggedIn }) {
                     newCard.isLiked = true;
                     addSavedCardsLocal(newCard);
                     console.log(savedCardsList);
-                    let newSavedCardList = savedCardsList;
-                    newSavedCardList.push(newCard);
-                    setSavedCardsList(newSavedCardList);
+                    const newSavedCardsList = [ ...savedCardsList, newCard];
+                    setSavedCardsList(newSavedCardsList);
                     console.log(getSavedCardsLocal());
                 })
                 .catch((err) => {
