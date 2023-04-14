@@ -24,6 +24,7 @@ class Api {
         .then((res) => {
           let cards = res.map(card => {
             return {...card, 
+              movieId: card.id,
               image: (`${this._baseUrl}${card.image.url}`),
               thumbnail: (`${this._baseUrl}${card.image.formats.thumbnail.url}`),
             };

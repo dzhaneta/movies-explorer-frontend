@@ -74,7 +74,7 @@ function Movies({ loggedIn }) {
 
     // refresh render cards likes
     useEffect(() => {
-        console.log('добавилась новая сохраненка, обновляем');
+        console.log('добавилась новая сохраненка, рендер галереи');
         filterAllMoviesAndSetResult(getSearchInputsLocal());
     }, [savedCardsList]);
 
@@ -218,6 +218,7 @@ function Movies({ loggedIn }) {
         
         if (card.isLiked) {
             console.log('убираем лайк');
+            console.log(card._id);
             MainApi
                 .deleteCard(card._id)
                 .then(() => {
@@ -234,12 +235,17 @@ function Movies({ loggedIn }) {
                 });
         } else {
             console.log('ставим лайк');
+            console.log(card);
             MainApi
                 .saveCard(card)
                 .then((newCard) => {
+                    console.log(newCard);
                     newCard.isLiked = true;
                     addSavedCardsLocal(newCard);
-                    setSavedCardsList(savedCardsList.push(newCard));
+                    console.log(savedCardsList);
+                    let newSavedCardList = savedCardsList;
+                    newSavedCardList.push(newCard);
+                    setSavedCardsList(newSavedCardList);
                     console.log(getSavedCardsLocal());
                 })
                 .catch((err) => {
