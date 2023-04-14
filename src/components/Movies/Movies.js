@@ -39,28 +39,21 @@ function Movies({ loggedIn }) {
 
     // initial search form & cards setup
     useEffect(() => {
-        console.log('работает маунт эффект');
         const previousInputs = getSearchInputsLocal();
 
         if (previousInputs) {
-            // searched before
-            console.log('searched before');
-            console.log(previousInputs);
             setSearchFormInitialState(previousInputs);
             setIsShortMoviesCheckboxActive(previousInputs.isChecked)
             if (getAllCardsLocal()) {
                 filterAllMoviesAndSetResult(previousInputs);
             } 
-        } else {
-            // no search before
-            console.log('no search before');
-        }
+        } 
+
         setIsSearchFormInitialized(true);
     }, []);
 
-    // filter by duration
+    // filter by checkbox
     useEffect(() => {
-        console.log('работает установка формы эффект');
         if (isSearchFormInitialized) {
             setCardsList(
                 filterByDuration(
@@ -74,7 +67,7 @@ function Movies({ loggedIn }) {
 
     // refresh render cards likes
     useEffect(() => {
-        console.log('добавилась новая сохраненка, рендер галереи');
+        console.log('rerender likes');
         filterAllMoviesAndSetResult(getSearchInputsLocal());
     }, [savedCardsList]);
 
@@ -129,16 +122,11 @@ function Movies({ loggedIn }) {
 
     // actualize all cards likes
     function getAllMoviesWithLikes() {
-        console.log('добавляем всем карточкам лайки');
 
         return Promise.all([ getAllMovies(), getSavedMovies()])
             .then(([ allCards, savedCards]) => {
-                console.log(allCards);
-                console.log(savedCards);
-                console.log('добавляем лайки');
 
                 if (savedCards.length !== 0) {
-                    console.log('лайки есть');
                     allCards.forEach(card => {
                         card.isLiked = savedCards.some(
                             saved => saved.movieId === card.movieId
@@ -158,30 +146,19 @@ function Movies({ loggedIn }) {
     function filterAllMoviesAndSetResult(values) {
         getAllMoviesWithLikes()
             .then((data) => {
-                console.log(data);
-                console.log('фильтруем по всему');
-                console.log(values.text);
 
                 let filteredByText = [];
 
                 if (values.text !== '') {
-                    console.log('фильтруем по слову');
                     filteredByText = filterByText(values.text, data) || [];
-
-                    console.log(filteredByText);
                     saveResultCardsLocal(filteredByText);
                 }
-                
-                console.log('фильтруем по чекбоксу');
-                console.log(filteredByText);
 
                 const filteredByDuration = filterByDuration(
                     isShortMoviesCheckboxActive,
                     filteredByText
                 ) || [];
                 
-                console.log('итог фильтрации');
-                console.log(filteredByDuration);
                 setCardsList(filteredByDuration);
 
                 if (filteredByDuration.length === 0) {
@@ -207,8 +184,6 @@ function Movies({ loggedIn }) {
 
     function searchMovies(values) {
         setIsLoading(true);
-        console.log('пошел поиск');
-        console.log(values);
         saveSearchInputsLocal(values);
         filterAllMoviesAndSetResult(values);
     }
@@ -217,37 +192,31 @@ function Movies({ loggedIn }) {
     function handleCardLike(card) {
         
         if (card.isLiked) {
-            console.log('убираем лайк');
-            console.log(card);
-            const savedCardId = getSavedCardsLocal().find(x => x.movieId === card.id)._id;
-            debugger;
+            const savedCardId = getSavedCardsLocal()
+                .find(x => x.movieId === card.id)._id;
+
             MainApi
                 .deleteCard(savedCardId)
                 .then(() => {
-                    console.log('текущие сохраненки');
-                    console.log(savedCardsList);
 
                     let newSavedCardList = getSavedCardsLocal()
                         .filter((item) => item.movieId !== card.id);
+                    
+                    
+                    deleteFromSavedCardsLocal(savedCardId);
                     setSavedCardsList(newSavedCardList);
-                    deleteFromSavedCardsLocal(card);
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         } else {
-            console.log('ставим лайк');
-            console.log(card);
             MainApi
                 .saveCard(card)
                 .then((newCard) => {
-                    console.log(newCard);
                     newCard.isLiked = true;
                     addSavedCardsLocal(newCard);
-                    console.log(savedCardsList);
                     const newSavedCardsList = [ ...savedCardsList, newCard];
                     setSavedCardsList(newSavedCardsList);
-                    console.log(getSavedCardsLocal());
                 })
                 .catch((err) => {
                     console.log(err);

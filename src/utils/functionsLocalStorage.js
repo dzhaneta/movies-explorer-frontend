@@ -37,9 +37,9 @@
         saveSavedCardsLocal(prev);
     }
 
-    export function deleteFromSavedCardsLocal(card) {
+    export function deleteFromSavedCardsLocal(cardId) {
         let prev = getSavedCardsLocal();
-        const current = prev.filter(item => item.id !== card.id);
+        const current = prev.filter(item => item._id !== cardId);
         saveSavedCardsLocal(current);
     }
 
