@@ -5,7 +5,6 @@ import SideBarMenu from '../SideBarMenu/SideBarMenu';
 import Preloader from '../Preloader/Preloader';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import savedMoviesList from '../../utils/savedMoviesList';
 
 function SavedMovies({ loggedIn }) {
 
@@ -44,7 +43,7 @@ function SavedMovies({ loggedIn }) {
                         "
                     >
                         <MoviesCardList 
-                            cards={savedMoviesList}
+                            //cards={}
                             type={'saved-movies'}
                         />
                     </div>

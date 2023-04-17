@@ -7,8 +7,9 @@ import SideBarMenu from '../SideBarMenu/SideBarMenu';
 import Preloader from '../Preloader/Preloader';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import useWindowWidth  from '../../utils/useWindowWidth';
 import { filterByText, filterByDuration } from '../../utils/functions';
-import { messages } from '../../utils/constants';
+import { galleryPoints, messages } from '../../utils/constants';
 import {
     saveSearchInputsLocal,
     getSearchInputsLocal,
@@ -23,19 +24,42 @@ import {
 } from '../../utils/functionsLocalStorage';
 
 function Movies({ loggedIn }) {
+
+    // search form states
     const [isSearchFormInitialized, setIsSearchFormInitialized] = useState(false);
     const [searchFormInitialState, setSearchFormInitialState] = useState();
     const [isShortMoviesCheckboxActive, setIsShortMoviesCheckboxActive] = useState(false);
+    
+    // cards gallery states
+    const windowWidth = useWindowWidth();
+    const [galleryQty, setGalleryQty] = useState(0);
+    const [galleryRowQty, setGalleryRowQty] = useState(0);
     const [savedCardsList, setSavedCardsList] = useState([]);
     const [cardsList, setCardsList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [isSideBarOpen, setSideBarOpen] = useState(false);
 
-    // info message state
+    // additional states
+    const [isSideBarOpen, setSideBarOpen] = useState(false);
     const [infoMessage, setinfoMessage] = useState({
         message: '',
         type: '',
     });
+
+    // cards gallery render params
+    useEffect(() => {
+        // получить текущую ширину 
+        console.log(windowWidth);
+        // понять первичное кол-во карточек в галерее
+        // понять кол-во карточек в строке для "еще"
+        let point = galleryPoints.find(e => windowWidth <= e.width); 
+        console.log(point);
+        setGalleryQty(point.set);
+        setGalleryRowQty(point.add);
+        
+        console.log(galleryQty);
+        console.log(galleryRowQty);
+        
+    }, [windowWidth]);
 
     // initial search form & cards setup
     useEffect(() => {
@@ -99,7 +123,7 @@ function Movies({ loggedIn }) {
     // get saved movies
     function getSavedMovies() {
         const savedCards = getSavedCardsLocal();
-
+        
         if (!savedCards) {
             return MainApi
                 .getCards()
@@ -198,7 +222,6 @@ function Movies({ loggedIn }) {
             MainApi
                 .deleteCard(savedCardId)
                 .then(() => {
-
                     let newSavedCardList = getSavedCardsLocal()
                         .filter((item) => item.movieId !== card.id);
                     
@@ -258,10 +281,10 @@ function Movies({ loggedIn }) {
                 }
 
                 {isLoading
-                ? <Preloader />
-                : <>
-                    {cardsList.length === 0
-                        ?   <div className="movies__movies-list_empty">
+                    ? <Preloader />
+                    : <>
+                        {cardsList.length === 0
+                            ? <div className="movies__movies-list_empty">
                                 <span
                                     className={`
                                         movies__message
@@ -271,20 +294,22 @@ function Movies({ loggedIn }) {
                                     {infoMessage.message}
                                 </span>
                             </div>
-                        :   <>
+                            : <>
                                 <div className="movies__movies-list">
                                     <MoviesCardList
                                         cards={cardsList}
                                         type={'movies'}
                                         onCardLike={handleCardLike}
-                                        />
-                                    </div>
+                                    />
+                                </div>
 
-                                    <div className="movies__more">
-                                        <button className="movies__more-button">Ещё</button>
+                                <div className="movies__more">
+                                    <button className="movies__more-button">
+                                        Ещё
+                                    </button>
                                 </div>
                             </>
-                    }
+                        }
                     </>
                 }
 

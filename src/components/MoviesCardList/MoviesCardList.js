@@ -16,6 +16,7 @@ function MoviesCardList({ cards, type, onCardLike, onCardDelete }) {
                 </div>
             ))}
         </div>
+        
     );
 }
 
