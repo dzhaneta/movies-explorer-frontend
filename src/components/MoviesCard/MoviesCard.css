@@ -51,21 +51,13 @@
     color: #A0A0A0;
 }
 
-@media screen and (max-width: 1280px) {
-    /* .movies-card {
-        width: 339px;
-    } */
-
+@media screen and (max-width: 909px) {
     .movies-card__image {
         height: 190px;
     }
 }
 
-@media screen and (max-width: 768px) {
-    /* .movies-card {
-        width: 100%;
-    } */
-
+@media screen and (max-width: 425px) {
     .movies-card__image {
         height: 168px;
     }

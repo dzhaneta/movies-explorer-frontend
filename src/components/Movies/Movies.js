@@ -7,7 +7,6 @@ import SideBarMenu from '../SideBarMenu/SideBarMenu';
 import Preloader from '../Preloader/Preloader';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import useWindowWidth  from '../../utils/useWindowWidth';
 import { filterByText, filterByDuration } from '../../utils/functions';
 import { galleryPoints, messages } from '../../utils/constants';
 import {
@@ -19,8 +18,12 @@ import {
     getSavedCardsLocal,
     addSavedCardsLocal,
     deleteFromSavedCardsLocal,
-    saveResultCardsLocal,
-    getResultCardsLocal
+    saveFilteredByText,
+    getFilteredByText,
+    saveFilteredByDuration,
+    getFilteredByDuration,
+    saveRenderedCardsQty,
+    getRenderedCardsQty
 } from '../../utils/functionsLocalStorage';
 
 function Movies({ loggedIn }) {
@@ -31,11 +34,10 @@ function Movies({ loggedIn }) {
     const [isShortMoviesCheckboxActive, setIsShortMoviesCheckboxActive] = useState(false);
     
     // cards gallery states
-    const windowWidth = useWindowWidth();
-    const [galleryQty, setGalleryQty] = useState(0);
-    const [galleryRowQty, setGalleryRowQty] = useState(0);
+    const [initialCardsQty, setInitialCardsQty] = useState(0);
+    const [cardsRowQty, setCardsRowQty] = useState(0);
     const [savedCardsList, setSavedCardsList] = useState([]);
-    const [cardsList, setCardsList] = useState([]);
+    const [renderedCardsList, setRenderedCardsList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     // additional states
@@ -47,54 +49,78 @@ function Movies({ loggedIn }) {
 
     // cards gallery render params
     useEffect(() => {
-        // получить текущую ширину 
-        console.log(windowWidth);
-        // понять первичное кол-во карточек в галерее
-        // понять кол-во карточек в строке для "еще"
-        let point = galleryPoints.find(e => windowWidth <= e.width); 
-        console.log(point);
-        setGalleryQty(point.set);
-        setGalleryRowQty(point.add);
-        
-        console.log(galleryQty);
-        console.log(galleryRowQty);
-        
-    }, [windowWidth]);
+        let timer;
+        setGalleryParams();
 
-    // initial search form & cards setup
+        function handleResize() {
+            clearTimeout(timer);
+            timer = setTimeout(() => setGalleryParams(), 500);
+        }
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    function setGalleryParams() {
+        let point = galleryPoints.find(e => window.innerWidth >= e.width); 
+        setInitialCardsQty(point.set);
+        setCardsRowQty(point.add);
+    }
+
+    // initial search form setup
     useEffect(() => {
         const previousInputs = getSearchInputsLocal();
 
         if (previousInputs) {
             setSearchFormInitialState(previousInputs);
             setIsShortMoviesCheckboxActive(previousInputs.isChecked)
-            if (getAllCardsLocal()) {
-                filterAllMoviesAndSetResult(previousInputs);
-            } 
         } 
 
         setIsSearchFormInitialized(true);
     }, []);
 
-    // filter by checkbox
+    // refresh gallery inital, by checkbox
     useEffect(() => {
         if (isSearchFormInitialized) {
-            setCardsList(
-                filterByDuration(
-                    isShortMoviesCheckboxActive,
-                    getResultCardsLocal()
-                ) || []
-            );
-            saveSearchInputsLocal({ isChecked: isShortMoviesCheckboxActive });
+            if (getAllCardsLocal()) {
+                // refresh likes
+
+                getAllMoviesWithLikes()
+                    .then((data) => {
+                        let filtered = filterMovies(data, searchFormInitialState);
+                        renderMovies(filtered, getRenderedCardsQty());
+                    })
+                    .catch(() => {
+                        setinfoMessage({
+                            message: messages.moviesApiError,
+                            type: 'error',
+                        });
+                    })
+                
+                saveSearchInputsLocal({ isChecked: isShortMoviesCheckboxActive });
+            } 
         }
+        console.log('gallery rerendered');
     }, [isShortMoviesCheckboxActive, isSearchFormInitialized]);
 
     // refresh render cards likes
     useEffect(() => {
         console.log('rerender likes');
-        filterAllMoviesAndSetResult(getSearchInputsLocal());
+        getAllMoviesWithLikes()
+            .then((data) => {
+                let filtered = filterMovies(data, searchFormInitialState);
+                renderMovies(filtered, getRenderedCardsQty());
+            })
+            .catch(() => {
+                setinfoMessage({
+                    message: messages.moviesApiError,
+                    type: 'error',
+                });
+            })
+
     }, [savedCardsList]);
 
+    
 
     // get all movies
     function getAllMovies() {
@@ -104,12 +130,10 @@ function Movies({ loggedIn }) {
             return MoviesApi
                 .getCards()
                 .then((data) => {
-                    console.log('all films get from API');
                     saveAllCardsLocal(data);
                     return data;
                 })
                 .catch(() => {
-                    console.log('ответ movies апи не пришел');
                     setinfoMessage({
                         message: messages.moviesApiError,
                         type: 'error',
@@ -128,12 +152,10 @@ function Movies({ loggedIn }) {
             return MainApi
                 .getCards()
                 .then((data) => {
-                    console.log('saved films get from API');
                     saveSavedCardsLocal(data);
                     return data;
                 })
                 .catch(() => {
-                    console.log('ответ main апи не пришел');
                     setinfoMessage({
                         message: messages.moviesApiError,
                         type: 'error',
@@ -166,31 +188,45 @@ function Movies({ loggedIn }) {
             });
     }
 
-    // filter movies with likes
-    function filterAllMoviesAndSetResult(values) {
+    // filter movies 
+    function filterMovies(data, values) {
+        // filter by text
+        let filteredByText = [];
+        if (values.text !== '') {
+            filteredByText = filterByText(values.text, data) || [];
+            saveFilteredByText(filteredByText);
+        }
+        // filter by checkbox
+        const filteredByDuration = filterByDuration(
+            isShortMoviesCheckboxActive,
+            filteredByText
+        ) || [];
+        saveFilteredByDuration(filteredByDuration);
+        return filteredByDuration;
+    }
+
+    function renderMovies(data, cardsQty) {
+        if (data.length === 0) {
+            setinfoMessage({
+                message: messages.moviesNoResult,
+                type: 'info',
+            });
+        } else {
+            // render gallery according to screen width
+            const rendered = data.slice(0, cardsQty);
+            saveRenderedCardsQty(rendered.length);
+            setRenderedCardsList(rendered);
+        }
+    }
+
+    // search & filter handlers
+    function searchMovies(values) {
+        setIsLoading(true);
+        saveSearchInputsLocal(values);
         getAllMoviesWithLikes()
             .then((data) => {
-
-                let filteredByText = [];
-
-                if (values.text !== '') {
-                    filteredByText = filterByText(values.text, data) || [];
-                    saveResultCardsLocal(filteredByText);
-                }
-
-                const filteredByDuration = filterByDuration(
-                    isShortMoviesCheckboxActive,
-                    filteredByText
-                ) || [];
-                
-                setCardsList(filteredByDuration);
-
-                if (filteredByDuration.length === 0) {
-                    setinfoMessage({
-                        message: messages.moviesNoResult,
-                        type: 'info',
-                    });
-                }
+                let filtered = filterMovies(data, values);
+                renderMovies(filtered, initialCardsQty);
             })
             .catch((e) => {
                 console.error(e);
@@ -202,14 +238,6 @@ function Movies({ loggedIn }) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }
-
-    // search & filter handlers
-
-    function searchMovies(values) {
-        setIsLoading(true);
-        saveSearchInputsLocal(values);
-        filterAllMoviesAndSetResult(values);
     }
 
     // card like-dislike handler
@@ -224,8 +252,6 @@ function Movies({ loggedIn }) {
                 .then(() => {
                     let newSavedCardList = getSavedCardsLocal()
                         .filter((item) => item.movieId !== card.id);
-                    
-                    
                     deleteFromSavedCardsLocal(savedCardId);
                     setSavedCardsList(newSavedCardList);
                 })
@@ -245,6 +271,13 @@ function Movies({ loggedIn }) {
                     console.log(err);
                 });
         }
+    }
+
+    function handleShowMoreMovies() {
+        const newCardsQty = renderedCardsList.length + cardsRowQty;
+        const rendered = getFilteredByDuration().slice(0, newCardsQty);
+        saveRenderedCardsQty(rendered.length);
+        setRenderedCardsList(rendered);
     }
 
     // sidebar handlers
@@ -283,7 +316,7 @@ function Movies({ loggedIn }) {
                 {isLoading
                     ? <Preloader />
                     : <>
-                        {cardsList.length === 0
+                        {renderedCardsList.length === 0
                             ? <div className="movies__movies-list_empty">
                                 <span
                                     className={`
@@ -297,16 +330,24 @@ function Movies({ loggedIn }) {
                             : <>
                                 <div className="movies__movies-list">
                                     <MoviesCardList
-                                        cards={cardsList}
+                                        cards={renderedCardsList}
                                         type={'movies'}
                                         onCardLike={handleCardLike}
                                     />
                                 </div>
 
                                 <div className="movies__more">
-                                    <button className="movies__more-button">
-                                        Ещё
-                                    </button>
+                                    {renderedCardsList.length < getFilteredByDuration().length
+                                    ? 
+                                        <button 
+                                            className="movies__more-button"
+                                            onClick={handleShowMoreMovies}
+                                        >
+                                            Ещё
+                                        </button>
+                                    : <></>
+                                    }
+                                    
                                 </div>
                             </>
                         }

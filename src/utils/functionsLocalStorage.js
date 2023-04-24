@@ -43,10 +43,26 @@
         saveSavedCardsLocal(current);
     }
 
-    export function saveResultCardsLocal(cards) {
-        localStorage.setItem('movies-result', JSON.stringify(cards));
+    export function saveFilteredByText(cards) {
+        localStorage.setItem('movies-found-by-text', JSON.stringify(cards));
     }
 
-    export function getResultCardsLocal() {
-        return JSON.parse(localStorage.getItem('movies-result'));
+    export function getFilteredByText() {
+        return JSON.parse(localStorage.getItem('movies-found-by-text'));
+    }
+
+    export function saveFilteredByDuration(cards) {
+        localStorage.setItem('movies-found-by-duration', JSON.stringify(cards));
+    }
+
+    export function getFilteredByDuration() {
+        return JSON.parse(localStorage.getItem('movies-found-by-duration'));
+    }
+
+    export function saveRenderedCardsQty(qty) {
+        localStorage.setItem('rendered-cards-qty', JSON.stringify(qty));
+    }
+
+    export function getRenderedCardsQty() {
+        return JSON.parse(localStorage.getItem('rendered-cards-qty'));
     }

@@ -10,9 +10,9 @@ export const regexes = {
 
 export const galleryPoints = [
   {
-    width: 425,
-    set: 5,
-    add: 1,
+    width: 910,
+    set: 16,
+    add: 4,
   },
   {
     width: 768,
@@ -20,8 +20,8 @@ export const galleryPoints = [
     add: 2,
   },
   {
-    width: 1024,
-    set: 16,
-    add: 4,
+    width: 320,
+    set: 5,
+    add: 1,
   },
 ]
