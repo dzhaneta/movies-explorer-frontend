@@ -31,26 +31,6 @@
         return JSON.parse(localStorage.getItem('saved-movies'));
     }
 
-    export function addSavedCardsLocal(card) {
-        let prev = getSavedCardsLocal();
-        prev = [...prev, card];
-        saveSavedCardsLocal(prev);
-    }
-
-    export function deleteFromSavedCardsLocal(cardId) {
-        let prev = getSavedCardsLocal();
-        const current = prev.filter(item => item._id !== cardId);
-        saveSavedCardsLocal(current);
-    }
-
-    export function saveFilteredByText(cards) {
-        localStorage.setItem('movies-found-by-text', JSON.stringify(cards));
-    }
-
-    export function getFilteredByText() {
-        return JSON.parse(localStorage.getItem('movies-found-by-text'));
-    }
-
     export function saveFilteredByDuration(cards) {
         localStorage.setItem('movies-found-by-duration', JSON.stringify(cards));
     }

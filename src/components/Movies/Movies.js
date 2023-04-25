@@ -16,10 +16,6 @@ import {
     getAllCardsLocal,
     saveSavedCardsLocal,
     getSavedCardsLocal,
-    addSavedCardsLocal,
-    deleteFromSavedCardsLocal,
-    saveFilteredByText,
-    getFilteredByText,
     saveFilteredByDuration,
     getFilteredByDuration,
     saveRenderedCardsQty,
@@ -42,7 +38,7 @@ function Movies({ loggedIn }) {
 
     // additional states
     const [isSideBarOpen, setSideBarOpen] = useState(false);
-    const [infoMessage, setinfoMessage] = useState({
+    const [infoMessage, setInfoMessage] = useState({
         message: '',
         type: '',
     });
@@ -84,20 +80,19 @@ function Movies({ loggedIn }) {
         if (isSearchFormInitialized) {
             if (getAllCardsLocal()) {
                 // refresh likes
+                saveSearchInputsLocal({ isChecked: isShortMoviesCheckboxActive });
 
                 getAllMoviesWithLikes()
                     .then((data) => {
-                        let filtered = filterMovies(data, searchFormInitialState);
+                        let filtered = filterMovies(data, getSearchInputsLocal());
                         renderMovies(filtered, getRenderedCardsQty());
                     })
                     .catch(() => {
-                        setinfoMessage({
+                        setInfoMessage({
                             message: messages.moviesApiError,
                             type: 'error',
                         });
                     })
-                
-                saveSearchInputsLocal({ isChecked: isShortMoviesCheckboxActive });
             } 
         }
         console.log('gallery rerendered');
@@ -108,11 +103,11 @@ function Movies({ loggedIn }) {
         console.log('rerender likes');
         getAllMoviesWithLikes()
             .then((data) => {
-                let filtered = filterMovies(data, searchFormInitialState);
+                let filtered = filterMovies(data, getSearchInputsLocal());
                 renderMovies(filtered, getRenderedCardsQty());
             })
             .catch(() => {
-                setinfoMessage({
+                setInfoMessage({
                     message: messages.moviesApiError,
                     type: 'error',
                 });
@@ -134,7 +129,7 @@ function Movies({ loggedIn }) {
                     return data;
                 })
                 .catch(() => {
-                    setinfoMessage({
+                    setInfoMessage({
                         message: messages.moviesApiError,
                         type: 'error',
                     });
@@ -156,7 +151,7 @@ function Movies({ loggedIn }) {
                     return data;
                 })
                 .catch(() => {
-                    setinfoMessage({
+                    setInfoMessage({
                         message: messages.moviesApiError,
                         type: 'error',
                     });
@@ -194,7 +189,6 @@ function Movies({ loggedIn }) {
         let filteredByText = [];
         if (values.text !== '') {
             filteredByText = filterByText(values.text, data) || [];
-            saveFilteredByText(filteredByText);
         }
         // filter by checkbox
         const filteredByDuration = filterByDuration(
@@ -207,14 +201,16 @@ function Movies({ loggedIn }) {
 
     function renderMovies(data, cardsQty) {
         if (data.length === 0) {
-            setinfoMessage({
+            setInfoMessage({
                 message: messages.moviesNoResult,
                 type: 'info',
             });
         } else {
             // render gallery according to screen width
             const rendered = data.slice(0, cardsQty);
-            saveRenderedCardsQty(rendered.length);
+            rendered.length <= initialCardsQty
+                ? saveRenderedCardsQty(initialCardsQty)
+                : saveRenderedCardsQty(rendered.length);
             setRenderedCardsList(rendered);
         }
     }
@@ -230,7 +226,7 @@ function Movies({ loggedIn }) {
             })
             .catch((e) => {
                 console.error(e);
-                setinfoMessage({
+                setInfoMessage({
                     message: messages.moviesApiError,
                     type: 'error',
                 });
@@ -252,7 +248,7 @@ function Movies({ loggedIn }) {
                 .then(() => {
                     let newSavedCardList = getSavedCardsLocal()
                         .filter((item) => item.movieId !== card.id);
-                    deleteFromSavedCardsLocal(savedCardId);
+                    saveSavedCardsLocal(newSavedCardList);
                     setSavedCardsList(newSavedCardList);
                 })
                 .catch((err) => {
@@ -263,8 +259,8 @@ function Movies({ loggedIn }) {
                 .saveCard(card)
                 .then((newCard) => {
                     newCard.isLiked = true;
-                    addSavedCardsLocal(newCard);
                     const newSavedCardsList = [ ...savedCardsList, newCard];
+                    saveSavedCardsLocal(newSavedCardsList);
                     setSavedCardsList(newSavedCardsList);
                 })
                 .catch((err) => {
