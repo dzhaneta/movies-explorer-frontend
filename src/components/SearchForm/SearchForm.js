@@ -10,6 +10,7 @@ function SearchForm({
     onCheckboxChange,
     onSubmit,
 }) {
+
     const { values, errors, handleChange, isValid } = useFormWithValidation(
         { [inputName]: initialState.text }
     );

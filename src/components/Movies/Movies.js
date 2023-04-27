@@ -10,8 +10,8 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { filterByText, filterByDuration } from '../../utils/functions';
 import { galleryPoints, messages } from '../../utils/constants';
 import {
-    saveSearchInputsLocal,
-    getSearchInputsLocal,
+    saveSearchReqMoviesLocal,
+    getSearchReqMoviesLocal,
     saveAllCardsLocal,
     getAllCardsLocal,
     saveSavedCardsLocal,
@@ -63,9 +63,9 @@ function Movies({ loggedIn }) {
         setCardsRowQty(point.add);
     }
 
-    // initial search form setup
+    // // initial search form setup
     useEffect(() => {
-        const previousInputs = getSearchInputsLocal();
+        const previousInputs = getSearchReqMoviesLocal();
 
         if (previousInputs) {
             setSearchFormInitialState(previousInputs);
@@ -80,11 +80,11 @@ function Movies({ loggedIn }) {
         if (isSearchFormInitialized) {
             if (getAllCardsLocal()) {
                 // refresh likes
-                saveSearchInputsLocal({ isChecked: isShortMoviesCheckboxActive });
+                saveSearchReqMoviesLocal({ isChecked: isShortMoviesCheckboxActive });
 
                 getAllMoviesWithLikes()
                     .then((data) => {
-                        let filtered = filterMovies(data, getSearchInputsLocal());
+                        let filtered = filterMovies(data, getSearchReqMoviesLocal());
                         renderMovies(filtered, getRenderedCardsQty());
                     })
                     .catch(() => {
@@ -95,7 +95,6 @@ function Movies({ loggedIn }) {
                     })
             } 
         }
-        console.log('gallery rerendered');
     }, [isShortMoviesCheckboxActive, isSearchFormInitialized]);
 
     // refresh render cards likes
@@ -103,7 +102,8 @@ function Movies({ loggedIn }) {
         console.log('rerender likes');
         getAllMoviesWithLikes()
             .then((data) => {
-                let filtered = filterMovies(data, getSearchInputsLocal());
+                
+                let filtered = filterMovies(data, getSearchReqMoviesLocal());
                 renderMovies(filtered, getRenderedCardsQty());
             })
             .catch(() => {
@@ -147,8 +147,9 @@ function Movies({ loggedIn }) {
             return MainApi
                 .getCards()
                 .then((data) => {
-                    saveSavedCardsLocal(data);
-                    return data;
+                    const savedCards = data.forEach(card => card.isLiked = true);
+                    saveSavedCardsLocal(savedCards);
+                    return savedCards;
                 })
                 .catch(() => {
                     setInfoMessage({
@@ -166,14 +167,12 @@ function Movies({ loggedIn }) {
 
         return Promise.all([ getAllMovies(), getSavedMovies()])
             .then(([ allCards, savedCards]) => {
-
-                if (savedCards.length !== 0) {
-                    allCards.forEach(card => {
-                        card.isLiked = savedCards.some(
+                allCards.forEach(card => {
+                    card.isLiked = savedCards?.some(
                             saved => saved.movieId === card.movieId
-                        );
-                    });
-                } 
+                        )
+                        ?? false;
+                });
 
                 saveAllCardsLocal(allCards);
                 return allCards;
@@ -205,20 +204,20 @@ function Movies({ loggedIn }) {
                 message: messages.moviesNoResult,
                 type: 'info',
             });
-        } else {
+        } 
             // render gallery according to screen width
             const rendered = data.slice(0, cardsQty);
             rendered.length <= initialCardsQty
                 ? saveRenderedCardsQty(initialCardsQty)
                 : saveRenderedCardsQty(rendered.length);
             setRenderedCardsList(rendered);
-        }
+        
     }
 
     // search & filter handlers
     function searchMovies(values) {
         setIsLoading(true);
-        saveSearchInputsLocal(values);
+        saveSearchReqMoviesLocal(values);
         getAllMoviesWithLikes()
             .then((data) => {
                 let filtered = filterMovies(data, values);
@@ -241,15 +240,18 @@ function Movies({ loggedIn }) {
         
         if (card.isLiked) {
             const savedCardId = getSavedCardsLocal()
-                .find(x => x.movieId === card.id)._id;
+                .find(x => x.movieId === card.movieId)._id;
 
             MainApi
                 .deleteCard(savedCardId)
                 .then(() => {
+                    console.log('deleting card id', card);
                     let newSavedCardList = getSavedCardsLocal()
-                        .filter((item) => item.movieId !== card.id);
+                        .filter((item) => item.movieId !== card.movieId);
+                    
                     saveSavedCardsLocal(newSavedCardList);
                     setSavedCardsList(newSavedCardList);
+                    console.log('handleCardLike', newSavedCardList);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -258,6 +260,7 @@ function Movies({ loggedIn }) {
             MainApi
                 .saveCard(card)
                 .then((newCard) => {
+                    console.log('liked card', newCard);
                     newCard.isLiked = true;
                     const newSavedCardsList = [ ...savedCardsList, newCard];
                     saveSavedCardsLocal(newSavedCardsList);
