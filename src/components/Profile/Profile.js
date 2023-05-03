@@ -2,7 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { currentUserContext } from '../../contexts/currentUserContex';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 import Header from '../Header/Header';
+import ButtonSubmit from "../ButtonSubmit/ButtonSubmit";
 import SideBarMenu from '../SideBarMenu/SideBarMenu';
+import { regexes } from '../../utils/constants';
 
 function Profile({
     loggedIn,
@@ -13,6 +15,8 @@ function Profile({
 }) {
 
     const user = useContext(currentUserContext);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSideBarOpen, setSideBarOpen] = useState(false);
 
     // form states & handlers
     const { 
@@ -59,8 +63,6 @@ function Profile({
     }
   
     // sidebar states & handlers
-    
-    const [isSideBarOpen, setSideBarOpen] = useState(false);
 
     function handleOpenSideBarMenu() {
         setSideBarOpen(true);
@@ -96,11 +98,12 @@ function Profile({
                                 value={values.name || ''}
                                 name='name'
                                 required
-                                pattern='[- А-Яа-яA-Za-zё]+$'
+                                pattern={regexes.name}
                                 minLength='2'
                                 maxLength='30'
                                 placeholder='Ivan Ivanov'
                                 className='profile__input'
+                                disabled={!isEditing && true}
                             />
                         </label>
                         <span 
@@ -117,8 +120,9 @@ function Profile({
                                 value={values.email || ''}
                                 name='email'
                                 required
-                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                pattern={regexes.email}
                                 className='profile__input'
+                                disabled={!isEditing && true}
                             />
                         </label>
                         <span className="profile__input-error">
@@ -135,27 +139,35 @@ function Profile({
                         {infoMessage.message}
                     </span>
 
-                    <button
-                        className={`
-                            profile__button 
-                            profile__button_active
-                            ${!isValid && 'profile__button_inactive'}
-                        `}
-                        type='submit'
-                    >
-                        Редактировать
-                    </button>
+                    {isEditing
+                        ? <ButtonSubmit
+                                isValid={isValid}
+                                submitButtonText="Сохранить"
+                            />
+                        : <>
+                            <button
+                                className='
+                                    profile__button 
+                                    profile__button_active
+                                '
+                                type='button'
+                                onClick={() => setIsEditing(true)}
+                            >
+                                Редактировать
+                            </button>
 
-                    <button
-                        onClick={onSignOut}
-                        className={`
-                            profile__button
-                            profile__button_type_logout
-                        `}
-                        type='button'
-                    >
-                        Выйти из аккаунта
-                    </button>
+                            <button
+                                onClick={onSignOut}
+                                className={`
+                                    profile__button
+                                    profile__button_type_logout
+                                `}
+                                type='button'
+                            >
+                                Выйти из аккаунта
+                            </button>
+                        </>
+                    }
 
                 </form>
 

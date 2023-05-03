@@ -93,7 +93,6 @@ function SavedMovies({ loggedIn }) {
                     })
             } 
         }
-        console.log('gallery rerendered');
     }, [isShortMoviesCheckboxActive, isSearchFormInitialized]);
 
     // rerender gallery

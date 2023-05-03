@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 import Logo from '../Logo/Logo';
 import AuthInput from '../AuthInput/AuthInput';
+import ButtonSubmit from '../ButtonSubmit/ButtonSubmit';
 
 function AuthPage({
   page,
@@ -89,16 +90,13 @@ function AuthPage({
           {infoMessage.message}
         </span>
 
-        <button
-          className={`
-            auth-page__submit-button 
-            ${!isValid && 'auth-page__submit-button_inactive'}
-            `}
-          type='submit'
-          disabled={!isValid}
-        >
-          {submitButtonText}
-        </button>
+        <div className="auth-page__submit-button-wrap">
+          <ButtonSubmit
+            isValid={isValid}
+            submitButtonText={submitButtonText}
+          />
+        </div>
+
 
       </form>
 

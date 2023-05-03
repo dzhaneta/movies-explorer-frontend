@@ -57,41 +57,8 @@
     color: #EE3465;
 }
 
-.auth-page__submit-button {
+.auth-page__submit-button-wrap{
     margin: 14px 0;
-    padding: 15px 0;
-    background-color: #2BE080;
-    border: none;
-    border-radius: 3px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 15px;
-    text-align: center;
-    color: #EE3465;
-}
-
-
-.auth-page__submit-button {
-    font-size: 14px;
-    line-height: 17px;
-    margin: 14px 0;
-    padding: 15px 0;
-    border: none;
-    border-radius: 3px;
-    background-color: #2BE080;
-    font-weight: 500;
-    text-align: center;
-    color: #fff;
-}
-
-.auth-page__submit-button:hover {
-    cursor: pointer;
-    opacity: 0.8;
-}
-
-.auth-page__submit-button_inactive {
-    background-color: #F8F8F8;
-    color: #C2C2C2;
 }
 
 .auth-page__extra {
@@ -136,11 +103,6 @@
 
     .auth-page__form {
         min-width: 260px;
-    }
-
-    .auth-page__submit-button {
-        font-size: 12px;
-        line-height: 15px;
     }
 
     .auth-page__extra {
