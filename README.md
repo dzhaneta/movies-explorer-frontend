@@ -9,7 +9,7 @@ Figma Layout https://disk.yandex.ru/d/9bwqjAkUbpB18A
 https://beatfilmlist.nomoredomains.work
 
 ## Pull Request Link 
-
+https://github.com/dzhaneta/movies-explorer-frontend/pull/41
 
 ## Как запустить проект
 
