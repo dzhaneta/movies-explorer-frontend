@@ -7,7 +7,6 @@ import NotFound from '../NotFound/NotFound';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Main from '../Main/Main';
-import MoviesPage from '../MoviesPage/MoviesPage';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
