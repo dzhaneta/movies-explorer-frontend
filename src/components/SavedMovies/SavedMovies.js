@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import MainApi from "../../utils/MainApi";
 import MoviesPage from "../MoviesPage/MoviesPage";
-import { messages } from '../../utils/constants';
 import {
     saveSearchReqSavedMoviesLocal,
     getSearchReqSavedMoviesLocal,
@@ -11,12 +10,6 @@ import {
 
 
 function SavedMovies({ loggedIn }) {
-
-    // additional states
-    const [infoMessage, setInfoMessage] = useState({
-        message: '',
-        type: '',
-    });
 
     // get saved movies
     function getSavedMovies() {
@@ -30,12 +23,6 @@ function SavedMovies({ loggedIn }) {
                     saveSavedCardsLocal(savedCards);
                     return savedCards;
                 })
-                .catch(() => {
-                    setInfoMessage({
-                        message: messages.moviesApiError,
-                        type: 'error',
-                    });
-                });
         }
 
         return Promise.resolve(savedCards);

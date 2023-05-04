@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import MoviesApi from "../../utils/MoviesApi";
 import MainApi from "../../utils/MainApi";
 import MoviesPage from "../MoviesPage/MoviesPage";
-import { messages } from '../../utils/constants';
 import {
     saveSearchReqMoviesLocal,
     getSearchReqMoviesLocal,
@@ -14,12 +13,6 @@ import {
 
 function Movies({ loggedIn }) {
     
-    // additional states
-    const [infoMessage, setInfoMessage] = useState({
-        message: '',
-        type: '',
-    });
-
     // get all movies
     function getAllMovies() {
         const localCards = getAllCardsLocal();
@@ -31,12 +24,6 @@ function Movies({ loggedIn }) {
                     saveAllCardsLocal(data);
                     return data;
                 })
-                .catch(() => {
-                    setInfoMessage({
-                        message: messages.moviesApiError,
-                        type: 'error',
-                    });
-                });
         }
 
         return Promise.resolve(localCards);
@@ -55,12 +42,6 @@ function Movies({ loggedIn }) {
                     saveSavedCardsLocal(savedCards);
                     return savedCards;
                 })
-                .catch(() => {
-                    setInfoMessage({
-                        message: messages.moviesApiError,
-                        type: 'error',
-                    });
-                });
         }
         
         return Promise.resolve(savedCards);
@@ -81,9 +62,6 @@ function Movies({ loggedIn }) {
                 saveAllCardsLocal(allCards);
                 return allCards;
             })
-            .catch((err) => {
-                console.log(err);
-            });
     }
 
     return (

@@ -1,13 +1,17 @@
 # movies-explorer-frontend
 
-Репозиторий для моего дипломного проекта - приложения `BeatFilm`, включающий 
-фронтенд приложения (пока без особой функциональности).
-  
-#### https://github.com/dzhaneta/movies-explorer-frontend
+Фронтенд для дипломного проекта - приложения `BeatFilm List`, в котором можно найти фильмы BeatFilm Festival по запросу и сохранить свои список любимых.
 
-#### Ссылка на дизайн-макет проекта [тут](https://disk.yandex.ru/d/9bwqjAkUbpB18A)
+## Design 
+Figma Layout https://disk.yandex.ru/d/9bwqjAkUbpB18A
 
-**Как запустить проект**
+## URL  
+https://beatfilmlist.nomoredomains.work
+
+## Pull Request Link 
+
+
+## Как запустить проект
 
 * npm run start
 запускает приложение в режиме разработки

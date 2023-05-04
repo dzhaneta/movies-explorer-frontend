@@ -117,7 +117,7 @@ function MoviesPage({
                 });
             })
     }, [savedCardsList]);
-
+    
     // filter movies 
     function filterMovies(data, values) {
         // filter by text
