@@ -15,9 +15,9 @@ function Movies({ loggedIn }) {
     
     // get all movies
     function getAllMovies() {
-        const localCards = getAllCardsLocal();
+        const localCards = getAllCardsLocal() || [];
 
-        if (!localCards) {
+        if (localCards.length === 0) {
             return MoviesApi
                 .getCards()
                 .then((data) => {
@@ -33,14 +33,13 @@ function Movies({ loggedIn }) {
     function getSavedMovies() {
         const savedCards = getSavedCardsLocal() || [];
         
-        
-        if (!savedCards) {
+        if (savedCards.length === 0) {
             return MainApi
                 .getCards()
                 .then((data) => {
-                    const savedCards = data.forEach(card => card.isLiked = true);
-                    saveSavedCardsLocal(savedCards);
-                    return savedCards;
+                    data.forEach(card => card.isLiked = true);
+                    saveSavedCardsLocal(data);
+                    return data;
                 })
         }
         

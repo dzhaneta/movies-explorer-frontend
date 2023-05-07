@@ -13,18 +13,18 @@ function SavedMovies({ loggedIn }) {
 
     // get saved movies
     function getSavedMovies() {
-        const savedCards = getSavedCardsLocal();
+        const savedCards = getSavedCardsLocal() || [];
         
-        if (!savedCards) {
+        if (savedCards.length === 0) {
             return MainApi
                 .getCards()
                 .then((data) => {
-                    const savedCards = data.forEach(card => card.isLiked = true);
-                    saveSavedCardsLocal(savedCards);
-                    return savedCards;
+                    data.forEach(card => card.isLiked = true);
+                    saveSavedCardsLocal(data);
+                    return data;
                 })
         }
-
+        
         return Promise.resolve(savedCards);
     }
 
