@@ -1,6 +1,7 @@
 import unlikedIcon from '../../images/icon_unliked.svg';
 import likedIcon from '../../images/icon_liked.svg';
-import deleteIcon from '../../images/icon_delete.svg';
+import deleteIconActive from '../../images/icon_delete_active.svg';
+import deleteIconInactive from '../../images/icon_delete.svg';
 import { getMovieDuration } from '../../utils/functions';
 import { useState } from 'react';
 
@@ -68,7 +69,7 @@ function MoviesCard({ movie, type, onCardLike, onCardDelete }) {
                         onMouseLeave={() => setButtonHovered(false)}
                     >
                         <img 
-                            src={isButtonHovered? deleteIcon : likedIcon} 
+                            src={isButtonHovered? deleteIconActive : deleteIconInactive} 
                             alt="delete-icon" 
                             className="movies-card__like-icon"
                         />
