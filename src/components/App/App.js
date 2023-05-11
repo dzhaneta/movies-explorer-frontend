@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'; 
 import { Route, Switch, useHistory } from "react-router-dom";
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import UnauthorizedRoute from '../UnauthorizedRoute/UnauthorizedRoute';
 import MainApi from '../../utils/MainApi';
 import { currentUserContext } from '../../contexts/currentUserContex';
 import NotFound from '../NotFound/NotFound';
@@ -180,21 +181,23 @@ function App() {
               onUpdateUser={handleUpdateUser}
             />
 
-            <Route path="/signin">
-              <Login
-                onLogin={handleLogin}
-                infoMessage={infoMessage}
-                setinfoMessage={setinfoMessage}
-              />
-            </Route>
+            <UnauthorizedRoute
+              path="/signin"
+              component={Login}
+              loggedIn={loggedIn}
+              onLogin={handleLogin}
+              infoMessage={infoMessage}
+              setinfoMessage={setinfoMessage}
+            />
 
-            <Route path="/signup">
-              <Register
-                onRegister={handleRegister}
-                infoMessage={infoMessage}
-                setinfoMessage={setinfoMessage}
-              />
-            </Route>
+            <UnauthorizedRoute
+              path="/signup"
+              component={Register}
+              loggedIn={loggedIn}
+              onRegister={handleRegister}
+              infoMessage={infoMessage}
+              setinfoMessage={setinfoMessage}
+            />
 
             <Route exact path="/">
               <Main loggedIn={loggedIn} />
