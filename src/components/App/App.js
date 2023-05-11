@@ -10,6 +10,7 @@ import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
+import { messages } from '../../utils/constants';
 
 function App() {
 
@@ -133,6 +134,10 @@ function App() {
       .setUserInfo(data)
       .then((res) => {
         setCurrentUser(res);
+        setinfoMessage({
+          message: messages.userUpdateSuccess,
+          type: 'info',
+        });
         setIsEditing(false);
       })
       .catch((err) => {

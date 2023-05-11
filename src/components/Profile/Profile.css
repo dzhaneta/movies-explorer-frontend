@@ -89,10 +89,17 @@
 .profile__api-error {
     min-height: 16px;
     text-align: center;
-    color: #EE3465;
     font-weight: 400;
     font-size: 13px;
     line-height: 16px;
+}
+
+.profile__api-error_type_error {
+    color: #EE3465;
+}
+
+.profile__api-error_type_info {
+    color: #2BE080;
 }
 
 .profile__button {

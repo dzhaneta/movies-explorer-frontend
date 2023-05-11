@@ -1,6 +1,8 @@
 export const messages = {
   moviesNoResult: 'Ничего не найдено',
   moviesApiError: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз',
+  moviesBeforeSearch: 'Здесь можно найти фильмы из архива Beat Film Festival. Введите ключевое слово и запускайте поиск.',
+  userUpdateSuccess: 'Новые данные успешно сохранены',
 };
 
 export const regexes = {
