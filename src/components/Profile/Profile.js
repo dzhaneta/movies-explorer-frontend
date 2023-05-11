@@ -8,6 +8,8 @@ import { regexes } from '../../utils/constants';
 
 function Profile({
     loggedIn,
+    isEditing,
+    onEditUser,
     onUpdateUser,
     onSignOut,
     infoMessage,
@@ -15,7 +17,6 @@ function Profile({
 }) {
 
     const user = useContext(currentUserContext);
-    const [isEditing, setIsEditing] = useState(false);
     const [isSideBarOpen, setSideBarOpen] = useState(false);
 
     // form states & handlers
@@ -151,7 +152,7 @@ function Profile({
                                     profile__button_active
                                 '
                                 type='button'
-                                onClick={() => setIsEditing(true)}
+                                onClick={() => onEditUser(true)}
                             >
                                 Редактировать
                             </button>

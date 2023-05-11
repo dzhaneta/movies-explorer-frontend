@@ -19,6 +19,7 @@ function App() {
   const [isAuthCheckFinished, setIsAuthCheckFinished] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
 
   // api errors states
   const [infoMessage, setinfoMessage] = useState({
@@ -46,7 +47,7 @@ function App() {
       });
   }, []);  
 
-  // set user info if logged-in
+  // user info setup
 
   useEffect(() => {
     if (!loggedIn) {
@@ -121,11 +122,18 @@ function App() {
       });
   }
 
+
+  // profile handlers 
+  function handleEditUser() {
+    setIsEditing(true);
+  }
+
   function handleUpdateUser(data) {
     MainApi
       .setUserInfo(data)
       .then((res) => {
         setCurrentUser(res);
+        setIsEditing(false);
       })
       .catch((err) => {
         setinfoMessage({
@@ -162,6 +170,8 @@ function App() {
               infoMessage={infoMessage}
               setinfoMessage={setinfoMessage}
               component={Profile}
+              isEditing={isEditing}
+              onEditUser={handleEditUser}
               onUpdateUser={handleUpdateUser}
             />
 
