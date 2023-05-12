@@ -3,11 +3,11 @@ export const messages = {
   moviesApiError: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз',
   moviesBeforeSearch: 'Здесь можно найти фильмы из архива Beat Film Festival. Введите ключевое слово и запускайте поиск.',
   userUpdateSuccess: 'Новые данные успешно сохранены',
+  emailNotValid: 'Введен некорректный email',
 };
 
 export const regexes = {
   name: '[- А-Яа-яA-Za-zё]+$',
-  email: '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'
 };
 
 export const galleryPoints = [

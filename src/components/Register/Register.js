@@ -23,7 +23,6 @@ function Register({ onRegister, infoMessage, setinfoMessage }) {
       label: 'E-mail',
       name: 'email',
       type: 'email',
-      pattern: regexes.email,
       placeholder: 'ivanov@mail.ru',
       errorMessage: '',
     },

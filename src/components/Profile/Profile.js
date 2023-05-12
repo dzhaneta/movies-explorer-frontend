@@ -121,7 +121,6 @@ function Profile({
                                 value={values.email || ''}
                                 name='email'
                                 required
-                                pattern={regexes.email}
                                 className='profile__input'
                                 disabled={!isEditing && true}
                             />
