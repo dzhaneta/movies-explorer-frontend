@@ -1,6 +1,5 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
-import { regexes } from '../../utils/constants';
 
 function Login({ onLogin, infoMessage, setinfoMessage }) {
 
