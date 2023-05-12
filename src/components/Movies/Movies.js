@@ -83,7 +83,13 @@ function Movies({ loggedIn }) {
                 // already searched before
                 saveSearchReqMoviesLocal({ isChecked: isShortMoviesCheckboxActive });
                 filterAndRender(getSearchReqMoviesLocal(), getRenderedCardsQty());
-            } 
+            } else {
+                // no search before
+                setInfoMessage({
+                    message: messages.moviesBeforeSearch,
+                    type: 'info',
+                });
+            }
         }
     }, [isShortMoviesCheckboxActive, isSearchFormInitialized]);
     
