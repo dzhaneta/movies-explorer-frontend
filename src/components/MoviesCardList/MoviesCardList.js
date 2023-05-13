@@ -5,9 +5,9 @@ function MoviesCardList({ cards, type, onCardLike, onCardDelete }) {
     return (
         <div className="movies-card-list">
             {cards.map(item => (
-                <div className="movies-card-list__item" key={item.id}>
+                <div className="movies-card-list__item" key={item.movieId}>
                     <MoviesCard 
-                        key={item.id}
+                        key={item.movieId}
                         movie={item}
                         type={type}
                         onCardLike={onCardLike}

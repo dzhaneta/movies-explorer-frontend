@@ -2,7 +2,7 @@ import unlikedIcon from '../../images/icon_unliked.svg';
 import likedIcon from '../../images/icon_liked.svg';
 import deleteIconActive from '../../images/icon_delete_active.svg';
 import deleteIconInactive from '../../images/icon_delete.svg';
-import { getMovieDuration } from '../../utils/functions';
+import { getMovieDuration } from '../../utils/functionsMovies';
 import { useState } from 'react';
 
 function MoviesCard({ movie, type, onCardLike, onCardDelete }) {
