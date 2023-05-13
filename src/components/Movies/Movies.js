@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import MoviesApi from "../../utils/MoviesApi";
 import MainApi from "../../utils/MainApi";
 import Header from "../Header/Header";
 import SearchForm from "../SearchForm/SearchForm";
@@ -8,16 +7,15 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import SideBarMenu from "../SideBarMenu/SideBarMenu";
 import { galleryPoints, messages } from '../../utils/constants';
-import { filterByText, filterByDuration } from '../../utils/functions';
-
+import {
+    filterMovies,
+    getAllMoviesWithLikes,
+} from '../../utils/functionsMovies';
 import {
     saveSearchReqMoviesLocal,
     getSearchReqMoviesLocal,
-    saveAllCardsLocal,
-    getAllCardsLocal,
     saveSavedCardsLocal,
     getSavedCardsLocal,
-    saveFilteredByDuration,
     getFilteredByDuration,
     saveRenderedCardsQty,
     getRenderedCardsQty,
@@ -59,7 +57,7 @@ function Movies({ loggedIn }) {
     }, []);
 
     function setGalleryParams() {
-        let point = galleryPoints.find(e => window.innerWidth >= e.width); 
+        let point = galleryPoints.find(e => window.innerWidth >= e.width);
         setInitialCardsQty(point.set);
         setCardsRowQty(point.add);
     }
@@ -70,7 +68,7 @@ function Movies({ loggedIn }) {
         if (previousInputs) {
             setSearchFormInitialState(previousInputs);
             setIsShortMoviesCheckboxActive(previousInputs.isChecked)
-        } 
+        }
 
         setIsSearchFormInitialized(true);
     }, []);
@@ -92,73 +90,6 @@ function Movies({ loggedIn }) {
             }
         }
     }, [isShortMoviesCheckboxActive, isSearchFormInitialized]);
-    
-    // get all movies
-    function getAllMovies() {
-        const localCards = getAllCardsLocal() || [];
-
-        if (localCards.length === 0) {
-            return MoviesApi
-                .getCards()
-                .then((data) => {
-                    saveAllCardsLocal(data);
-                    return data;
-                })
-        }
-
-        return Promise.resolve(localCards);
-    }
-
-    // get saved movies
-    function getSavedMovies() {
-        const savedCards = getSavedCardsLocal() || [];
-        
-        if (savedCards.length === 0) {
-            return MainApi
-                .getCards()
-                .then((data) => {
-                    data.forEach(card => card.isLiked = true);
-                    saveSavedCardsLocal(data);
-                    return data;
-                })
-        }
-        
-        setSavedCardsList(savedCards);
-        return Promise.resolve(savedCards);
-    }
-
-    // get all cards with up-to-date likes
-    function getAllMoviesWithLikes() {
-
-        return Promise.all([ getAllMovies(), getSavedMovies()])
-            .then(([ allCards, savedCards]) => {
-                allCards.forEach(card => {
-                    card.isLiked = savedCards?.some(
-                            saved => saved.movieId === card.movieId
-                        )
-                        ?? false;
-                });
-
-                saveAllCardsLocal(allCards);
-                return allCards;
-            })
-    }
-
-    // filter movies 
-    function filterMovies(data, values) {
-        // filter by text
-        let filteredByText = [];
-        if (values.text !== '') {
-            filteredByText = filterByText(values.text, data) || [];
-        }
-        // filter by checkbox
-        const filteredByDuration = filterByDuration(
-            isShortMoviesCheckboxActive,
-            filteredByText
-        ) || [];
-        saveFilteredByDuration(filteredByDuration);
-        return filteredByDuration;
-    }
 
     // render movies
     function renderMovies(data, cardsQty) {
@@ -167,7 +98,7 @@ function Movies({ loggedIn }) {
                 message: messages.moviesNoResult,
                 type: 'info',
             });
-        } 
+        }
             // render gallery according to screen width
             const rendered = data.slice(0, cardsQty);
             rendered.length <= initialCardsQty
@@ -178,9 +109,11 @@ function Movies({ loggedIn }) {
 
     function filterAndRender(searchReq, renderQty) {
         getAllMoviesWithLikes()
-            .then((data) => {
-                let filtered = filterMovies(data, searchReq);
+            .then(([allCards, savedCards]) => {
+                let filtered = filterMovies(allCards, searchReq);
                 renderMovies(filtered, renderQty);
+
+                setSavedCardsList(savedCards);
             })
             .catch(() => {
                 setInfoMessage({
@@ -192,7 +125,7 @@ function Movies({ loggedIn }) {
         return Promise.resolve();
     }
 
-        // search & filter handlers
+    // search & filter handlers
     function searchMovies(values) {
         setIsLoading(true);
         saveSearchReqMoviesLocal(values);
@@ -211,8 +144,8 @@ function Movies({ loggedIn }) {
     }
 
     // card like-dislike handler
-    function handleCardLike(card) {
-        
+    function handleToggleCardLike(card) {
+
         if (card.isLiked) {
             const savedCardId = getSavedCardsLocal()
                 .find(x => x.movieId === card.movieId)._id;
@@ -222,7 +155,7 @@ function Movies({ loggedIn }) {
                 .then(() => {
                     let newSavedCardList = getSavedCardsLocal()
                         .filter((item) => item.movieId !== card.movieId);
-                    
+
                     saveSavedCardsLocal(newSavedCardList);
                     setSavedCardsList(newSavedCardList);
                     filterAndRender(getSearchReqMoviesLocal(), getRenderedCardsQty());
@@ -262,7 +195,7 @@ function Movies({ loggedIn }) {
             />
 
             <main className="movies">
-            
+
                 {isSearchFormInitialized &&
                     <div className="movies__search-form-wrap">
 
@@ -298,15 +231,15 @@ function Movies({ loggedIn }) {
                                     <MoviesCardList
                                         cards={renderedCardsList}
                                         type='movies'
-                                        onCardLike={handleCardLike}
-                                        onCardDelete={handleCardLike}
+                                        onCardLike={handleToggleCardLike}
+                                        onCardDelete={handleToggleCardLike}
                                     />
                                 </div>
 
                                 <div className="movies__more">
                                     {renderedCardsList.length < getFilteredByDuration().length
-                                    ? 
-                                        <button 
+                                    ?
+                                        <button
                                             className="movies__more-button"
                                             onClick={handleShowMoreMovies}
                                         >
@@ -314,7 +247,7 @@ function Movies({ loggedIn }) {
                                         </button>
                                     : <></>
                                     }
-                                    
+
                                 </div>
                             </>
                         }
