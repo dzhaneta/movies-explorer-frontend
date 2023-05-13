@@ -56,7 +56,7 @@ export function filterByDuration(filter, data) {
     data.length > 0
   ) {
     const result = data.filter((movie) =>
-      filter ? movie.duration <= 40 : movie.duration > 40
+      filter ? movie.duration <= 40 : movie
     );
     return result;
   } else return null;
