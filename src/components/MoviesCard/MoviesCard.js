@@ -1,36 +1,43 @@
-import { useState } from 'react';
 import unlikedIcon from '../../images/icon_unliked.svg';
 import likedIcon from '../../images/icon_liked.svg';
-import deleteIcon from '../../images/icon_delete.svg';
-import getMovieDuration from '../../utils/getMovieDuration';
+import deleteIconActive from '../../images/icon_delete_active.svg';
+import deleteIconInactive from '../../images/icon_delete.svg';
+import { getMovieDuration } from '../../utils/functionsMovies';
+import { useState } from 'react';
 
-function MoviesCard({ movie, type }) {
+function MoviesCard({ movie, type, onCardLike, onCardDelete }) {
 
-    const { image, duration, name } = movie;
+    const { nameRU, image, duration, trailerLink, isLiked } = movie;
+    const [isButtonHovered, setButtonHovered] = useState(false);
 
-    const [isLiked, setLiked] = useState(false);
-
-    function handleLikeCard() {
-        setLiked(!isLiked);
+    function handleLikeClick() {
+        onCardLike(movie);
     }
 
     function handleDeleteCard() {
-        setLiked(!isLiked);
+        onCardDelete(movie);
     }
 
     return (
         <div className="movies-card">
 
-            <img
-                className="movies-card__image"
-                src={image}
-                alt="movies_image"
-            />
+            <a 
+                href={trailerLink}
+                className="movies-card__link"
+                target="_blank"
+                rel="noreferrer"
+            >
+                <img
+                    className="movies-card__image"
+                    src={image}
+                    alt={image.name}
+                />
+            </a>
 
             <div className="movies-card__info">
 
                 <div className="movies-card__name">
-                    {name}
+                    {nameRU}
                 </div>
 
                 {type === 'movies' &&
@@ -39,12 +46,14 @@ function MoviesCard({ movie, type }) {
                             movies-card__button 
                             movies-card__button_type_like
                         "
-                        onClick={handleLikeCard}
+                        onClick={handleLikeClick}
                     >
                         <img 
                             src={isLiked? likedIcon : unlikedIcon} 
                             alt="like-icon" 
-                            className="movies-card__like-icon"
+                            className={isLiked 
+                                ? "movies-card__like-icon icon_liked"
+                                : "movies-card__like-icon"} 
                         />
                     </button>
                 }
@@ -56,9 +65,11 @@ function MoviesCard({ movie, type }) {
                             movies-card__button_type_delete
                         "
                         onClick={handleDeleteCard}
+                        onMouseEnter={() => setButtonHovered(true)} 
+                        onMouseLeave={() => setButtonHovered(false)}
                     >
                         <img 
-                            src={deleteIcon} 
+                            src={isButtonHovered? deleteIconActive : deleteIconInactive} 
                             alt="delete-icon" 
                             className="movies-card__like-icon"
                         />

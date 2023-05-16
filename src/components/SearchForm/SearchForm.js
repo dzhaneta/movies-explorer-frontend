@@ -1,32 +1,75 @@
-import { useState } from 'react';
 import iconLoupePath from '../../images/icon_loupe.svg'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
+import { useFormWithValidation } from '../../utils/useFormWithValidation';
 
-function SearchForm() {
-    const [isChecked, setIsChecked] = useState(true);
+const inputName = 'text';
 
-    return <div className="search-form">
+function SearchForm({
+    initialState = {},
+    isChecked,
+    onCheckboxChange,
+    onSubmit,
+}) {
 
-        <div className="search-form__input-wrap">
+    const { values, errors, handleChange, isValid } = useFormWithValidation(
+        { [inputName]: initialState.text }
+    );
 
-            <input
-                type="search"
-                placeholder="Фильм"
-                className="search-form__input"
-            />
+    function handleInputChange(e) {
+        handleChange(e);
+    }
 
-            <button className="search-form__button">
-                <img src={iconLoupePath} alt="search_icon" />
-            </button>
+    function handleCheckboxChange(e) {
+        onCheckboxChange(!isChecked);
+    }
 
-        </div>
+    function handleSubmit(e) {
+        e.preventDefault();
+        onSubmit({ text: values.text, isChecked });
+    }
 
-        <FilterCheckbox 
-            checked={isChecked} 
-            onChange={e => setIsChecked(e.target.value)}
-        />
-    
-    </div>;
+    return (
+        <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="search-form"
+        >
+
+            <fieldset className="search-form__search">
+
+                <input
+                    onChange={handleInputChange}
+                    value={values.text || ''}
+                    required
+                    name={inputName}
+                    type="text"
+                    placeholder="Фильм"
+                    className="search-form__input"
+                />
+
+                <span className="profile__input-error">
+                    {errors.text && 'Нужно ввести ключевое слово'}
+                </span>
+
+                <button
+                    type='submit'
+                    className="search-form__button"
+                    disabled={!isValid}
+                >
+                    <img src={iconLoupePath} alt="search_icon" />
+                </button>
+
+            </fieldset>
+
+            <fieldset className="search-form__filter">
+                <FilterCheckbox
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                />
+            </fieldset>
+
+        </form>
+    );
 }
 
 export default SearchForm;

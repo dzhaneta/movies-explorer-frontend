@@ -49,7 +49,7 @@
 }
 
 .profile__label:last-of-type {
-    padding: 16px 0 0;
+    padding: 0;
     border-bottom: none;
 }
 
@@ -63,6 +63,8 @@
     background-color: transparent;
     font-family: inherit;
     font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
     text-align: right;
 }
 
@@ -73,13 +75,31 @@
     border-bottom: 1px solid #2BE080;
 }
 
-.profile__api-error {
+.profile__input-error {
+    margin: 0;
     min-height: 16px;
+    box-sizing: border-box;
     text-align: center;
     color: #EE3465;
     font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+}
+
+.profile__api-error {
+    min-height: 16px;
+    text-align: center;
+    font-weight: 400;
     font-size: 13px;
     line-height: 16px;
+}
+
+.profile__api-error_type_error {
+    color: #EE3465;
+}
+
+.profile__api-error_type_info {
+    color: #2BE080;
 }
 
 .profile__button {
@@ -97,6 +117,10 @@
 .profile__button:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+.profile__button_inactive {
+    color: #C2C2C2;
 }
 
 .profile__button_type_logout {

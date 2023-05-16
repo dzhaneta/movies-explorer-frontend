@@ -1,8 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function NotFound() {
-    // functionality
+    
+    const history = useHistory();
+
+    function handleGoBack() {
+        history.goBack();
+    }
 
     return (
         <main className="not-found">
@@ -17,12 +22,12 @@ function NotFound() {
                 </div>
                 
 
-                <Link
-                    to="/signin"
+                <button
+                    onClick={handleGoBack}
                     className="not-found__link"
                 >
                     Назад
-                </Link>
+                </button>
             
         </main>
 );

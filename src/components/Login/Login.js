@@ -1,7 +1,11 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
 
-function Login() {
+function Login({ onLogin, infoMessage, setinfoMessage }) {
+
+  function handleLoginSubmit(values) {
+    onLogin(values);
+  }
 
   const inputs = [
     {
@@ -28,11 +32,14 @@ function Login() {
 
   return (
     <AuthPage
+      onSubmit={handleLoginSubmit}
       page='login'
       title='Рады видеть!'
       submitButtonText='Войти'
       additional={additional}
       inputs={inputs}
+      infoMessage={infoMessage}
+      setinfoMessage={setinfoMessage}
     />
   );
 }

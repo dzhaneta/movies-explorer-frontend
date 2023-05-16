@@ -19,13 +19,9 @@ function Header({ loggedIn, onSideBarOpen }) {
         >
             <Logo />
 
-            <Navigation
-                loggedIn={loggedIn} 
-            />
+            {loggedIn && <Navigation />}
 
-            <ProfileTab
-                loggedIn={loggedIn} 
-            />
+            <ProfileTab loggedIn={loggedIn} />
 
             {loggedIn &&
                 <button 
@@ -40,15 +36,3 @@ function Header({ loggedIn, onSideBarOpen }) {
 }
 
 export default Header;
-
-
-
-<header>
-    <logo></logo>
-
-    <overlay>
-        <nav></nav>
-        <account></account>
-    </overlay>
-    
-</header>

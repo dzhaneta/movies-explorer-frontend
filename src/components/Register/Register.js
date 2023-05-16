@@ -1,14 +1,19 @@
 import React from 'react';
 import AuthPage from '../AuthPage/AuthPage';
+import { regexes } from '../../utils/constants';
 
-function Register() {
+function Register({ onRegister, infoMessage, setinfoMessage }) {  
+
+  function handleRegisterSubmit(values) {
+    onRegister(values);
+  }
 
   const inputs = [
     {
       label: 'Имя',
       name: 'name',
       type: 'text',
-      pattern: '[- А-Яа-яA-Za-zё]+$',
+      pattern: regexes.name,
       minLength: '2',
       maxLength: '30',
       placeholder: 'Ivan Ivanov',
@@ -38,11 +43,14 @@ function Register() {
 
   return (
     <AuthPage
+      onSubmit={handleRegisterSubmit}
       page='register'
       title='Добро пожаловать!'
       submitButtonText='Зарегистрироваться'
       additional={additional}
       inputs={inputs}
+      infoMessage={infoMessage}
+      setinfoMessage={setinfoMessage}
     />
   );
 }

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../utils/useFormWithValidation';
 import Logo from '../Logo/Logo';
 import AuthInput from '../AuthInput/AuthInput';
+import ButtonSubmit from '../ButtonSubmit/ButtonSubmit';
 
 function AuthPage({
   page,
@@ -10,14 +11,32 @@ function AuthPage({
   submitButtonText,
   additional,
   inputs,
+  onSubmit,
+  infoMessage,
+  setinfoMessage
 }) {
 
   const { values, handleChange, errors, isValid } = useFormWithValidation();
 
+  useEffect(() => {
+    setinfoMessage({
+      message: '',
+      type: '',
+    });
+  }, [setinfoMessage]);
 
-  function handleSubmit(e) {
+  function handleFormSubmit(e) {
     e.preventDefault();
-    console.log('submit: ', values); // temporary for funcionality
+    onSubmit(values);
+  }
+
+  function handleInputChange(e) {
+    handleChange(e);
+    infoMessage &&
+      setinfoMessage({
+        message: '',
+        type: '',
+      });
   }
 
   return (
@@ -31,8 +50,9 @@ function AuthPage({
       </div>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         className='auth-page__form'
+        
       >
 
         <fieldset className={`auth-page__inputs ${page}__inputs`}>
@@ -41,6 +61,7 @@ function AuthPage({
             inputs.map((input) => (
 
               <AuthInput
+                onChange={handleInputChange}
                 label={input.label}
                 value={
                   values && values[input.name]
@@ -48,12 +69,11 @@ function AuthPage({
                     : ''
                 }
                 name={input.name}
+                placeholder={input.placeholder}
                 type={input.type}
                 pattern={input.pattern}
                 minLength={input.minLength}
                 maxLength={input.maxLength}
-                placeholder={input.placeholder}
-                onChange={handleChange}
                 errorMessage={errors[input.name]}
                 key={input.name}
               />
@@ -62,18 +82,21 @@ function AuthPage({
 
         </fieldset>
 
-        <span className="auth-page__api-error"></span>
-
-        <button
-          className={`
-            auth-page__submit-button 
-            ${!isValid && 'auth-page__submit-button_inactive'}
+        <span className={`
+          auth-page__api-error 
+          api-error_type_${infoMessage.type}
           `}
-          type='submit'
-          disabled={!isValid}
         >
-          {submitButtonText}
-        </button>
+          {infoMessage.message}
+        </span>
+
+        <div className="auth-page__submit-button-wrap">
+          <ButtonSubmit
+            isValid={isValid}
+            submitButtonText={submitButtonText}
+          />
+        </div>
+
 
       </form>
 

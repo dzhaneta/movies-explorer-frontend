@@ -4,11 +4,11 @@ function AuthInput({
     label,
     value,
     name,
+    placeholder,
     type,
     pattern,
     minLength,
     maxLength,
-    placeholder,
     onChange,
     errorMessage,
   }) {

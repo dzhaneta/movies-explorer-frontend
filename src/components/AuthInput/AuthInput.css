@@ -22,8 +22,8 @@
     color: #000;
 }
 
-.input__field_error {
-    color: #EE3465;
+.input__container::placeholder {
+    color: #bababa;
 }
 
 .input__container:focus {
@@ -40,4 +40,5 @@
     font-size: 10px;
     line-height: 12px;
     color: #EE3465;
+    
 }

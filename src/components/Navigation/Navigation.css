@@ -13,10 +13,6 @@
     }
 } 
 
-.navigation_hidden {
-    display: none;
-}
-
 .navigation_vertical {
     z-index: 1;
     display: flex;

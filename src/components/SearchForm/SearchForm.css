@@ -4,9 +4,18 @@
     gap: 32px;
 }
 
-.search-form__input-wrap {
+.search-form__search {
     position: relative;
     flex: 1;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.search-form__filter {
+    border: none;
+    margin: 0;
+    padding: 0;
 }
 
 .search-form__input {
@@ -94,7 +103,7 @@
 }
 
 @media screen and (max-width: 1280px) {
-    .search-form__input-wrap {
+    .search-form__search {
         width: 100%;
     }
 }
