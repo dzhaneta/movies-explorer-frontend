@@ -1,15 +1,30 @@
-# movies-explorer-frontend
+# :popcorn: Movie Explorer (frontend)
 
-Фронтенд для дипломного проекта - приложения `BeatFilm List`, в котором можно найти фильмы BeatFilm Festival по запросу и сохранить свои список любимых.
+Frontend для проекта **Movie Explorer** — приложения, в котором можно найти фильмы из архива BeatFilm Festival по запросу и сохранить в свою коллекцию.
 
-## Design 
-Figma Layout https://disk.yandex.ru/d/9bwqjAkUbpB18A
+## Techs
 
-## URL  
-https://beatfilmlist.nomoredomains.work
+- **JSX**
+- **CSS**
+- **JavaScript**
+- **React.js**
 
-## Pull Request Link 
-https://github.com/dzhaneta/movies-explorer-frontend/pull/41
+## Функционал
+- авторизация и аутентификация пользователя через jwt в куках
+- редактирование профиля пользователя
+- поиск фильмов по тексту и фильтрация по длительности
+- добавление и удаление фильмов из "сохраненных"
+- валидация форм
+- обработка ошибок
+
+## Layout
+
+Figma layout file: [Diploma.fig.zip](https://disk.yandex.ru/d/9bwqjAkUbpB18A)
+
+## Address
+
+[https://beatfilmlist.nomoredomains.work](https://beatfilmlist.nomoredomains.work)
+
 
 ## Как запустить проект
 
