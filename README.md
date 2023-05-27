@@ -7,7 +7,8 @@ Frontend для проекта **Movie Explorer** — приложения, в �
 - **HTML**
 - **CSS**
 - **JavaScript**
-- **React.js**
+- **React**
+- **Адаптивная верстка**
 
 ## Функционал
 - авторизация и аутентификация пользователя через jwt в куках
@@ -18,11 +19,12 @@ Frontend для проекта **Movie Explorer** — приложения, в �
 - обработка ошибок
 - API
 
-## Layout
+## Дизайн
 
-Figma layout file: [Diploma.fig.zip](https://disk.yandex.ru/d/9bwqjAkUbpB18A)
+Проект сверстан согласно сгенерированному дизайн-макету Figma.
+[Ссылка на макет](https://disk.yandex.ru/d/9bwqjAkUbpB18A)
 
-## Address
+## URL
 
 [https://beatfilmlist.nomoredomains.work](https://beatfilmlist.nomoredomains.work)
 
