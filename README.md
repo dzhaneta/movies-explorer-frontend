@@ -4,7 +4,7 @@ Frontend для проекта **Movie Explorer** — приложения, в �
 
 ## Techs
 
-- **JSX**
+- **HTML**
 - **CSS**
 - **JavaScript**
 - **React.js**
